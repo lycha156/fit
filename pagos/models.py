@@ -11,5 +11,7 @@ class Pago(models.Model):
     mes = models.IntegerField("Mes")
     año = models.IntegerField("Año")
     estado = models.CharField("Estado", max_length=50, choices=ESTADO_PAGO)
+    concepto = models.CharField("Concepto", max_length=50)
     monto = models.FloatField("Monto")
+    fechapago = models.DateField("Fecha de Pago", blank=True, null=True, auto_now_add=False)
 

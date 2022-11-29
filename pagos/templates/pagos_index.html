@@ -8,12 +8,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Socios</h1>
+              <h1 class="m-0">Pagos</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Socios</li>
+                <li class="breadcrumb-item active">Pagos</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -56,7 +56,7 @@
                 </div>
               </div> {% endcomment %}
 
-              <div class="card card-primary card-outline collapsed-card">
+              {% comment %} <div class="card card-primary card-outline collapsed-card">
                 <div class="card-header">
                     <h3 class="card-title">Busqueda</h3>
                     <div class="card-tools">
@@ -77,13 +77,13 @@
                     </div>
                 </div>
                 
-              </div>
+              </div> {% endcomment %}
 
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h5 class="card-title">Socios</h5>
+                  <h5 class="card-title">Pagos</h5>
 
-                  <a href="{% url 'socios_create' %}" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical'></i> Nuevo</a>
+                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Generar Cuotas Del Mes</a>
 
                 </div>
                 <!-- /.card-header -->
@@ -98,27 +98,36 @@
                     <thead>
                       <tr>
                         <th>Socio</th>
+                        <th>Mes/Año</th>
                         <th>Estado</th>
-                        <th>Horarios</th>
-                        <th>Pagos</th>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                        <th>Fecha Pago</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       
-                        {% for socio in socios %}
                         <tr>
-                          <td>{{socio.apellido}}, {{socio.nombre}}</td>
-                          <td>{{socio.estado}}</td>
-                          <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
-                          <td>Al Dia</td>
-                          <td>
-                            <a href="#" title="Ver Rutina"><i class='bx bx-dumbbell bx-sm'></i> </a>
-                            <a href="{% url 'socios_show' socio.id %}"><i class='bx bx-show bx-sm' ></i> </a>
-                            <a href="{% url 'socios_update' socio.id %}"><i class='bx bxs-edit bx-sm' ></i> </a>
-                            <a href="{% url 'socios_delete' socio.id %}"><i class='bx bx-trash bx-sm'></i> </a></td>
+                            <td>Andrada, Mauricio</td>
+                            <td>11/2022</td>
+                            <td>IMPAGO</td>
+                            <td>CUOTA BASICA</td>
+                            <td>$ 4500</td>
+                            <td></td>
+                            <td><a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                                <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a></td>
                         </tr>
-                        {% endfor %}
+                        <tr>
+                            <td>Andrada, Mauricio</td>
+                            <td>10/2022</td>
+                            <td>PAGO</td>
+                            <td>CUOTA BASICA</td>
+                            <td>$ 4500</td>
+                            <td>05/10/2022</td>
+                            <td><a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                                <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>
                       
                       
                       

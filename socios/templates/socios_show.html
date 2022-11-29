@@ -24,6 +24,8 @@
       <!-- Main content -->
       <div class="content">
         <div class="container-fluid">
+
+          {% comment %} PERFIL DEL SOCIO {% endcomment %}
           <div class="row">
 
             <div class="col-lg">
@@ -140,7 +142,162 @@
             </div>
             <!-- /.col-md-6 -->
           </div>
-          <!-- /.row -->
+          {% comment %} FIN DE PERFIL DEL SOCIO {% endcomment %}
+
+          {% comment %} DOCUMENTACION {% endcomment %}
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                {% comment %} header {% endcomment %}
+                <div class="card-header">
+                  <h5 class="card-title">Documentacion</h5>
+                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-cloud-upload'></i> Cargar</a>
+                </div>
+                {% comment %} body {% endcomment %}
+                <div class="card-body">
+                  <div class="card-body table-responsive p-0">
+
+                  
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th>Fecha de Carga</th>
+                          <th>Descripcion</th>
+                          <th>Tipo Archivo</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>                    
+                        <tr>
+                          <td>15/10/2022</td>
+                          <td>Certificado Medico</td>
+                          <td>DOC</td>
+                          <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
+                            <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>                        
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %} FIN DOCUMENTACION {% endcomment %}
+
+          {% comment %} PAGOS {% endcomment %}
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                {% comment %} header {% endcomment %}
+                <div class="card-header">
+                  <h5 class="card-title">Pagos</h5>
+                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Nuevo Cargo</a>
+                  <a href="#" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-history'></i> Historial de Pagos</a>
+                </div>
+                {% comment %} body {% endcomment %}
+                <div class="card-body">
+                  <div class="card-body table-responsive p-0">
+
+                  
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th>Fecha de Cuota (Mes/Año)</th>
+                          <th>Estado</th>
+                          <th>Concepto</th>
+                          <th>Monto</th>
+                          <th>Fecha de Pago</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>11/2022</td>
+                          <td>IMPAGO</td>
+                          <td>CUOTA BASICA</td>
+                          <td>$ 4500</td>
+                          <td></td>
+                          <td><a href="#" title="Marcar como pagado" alt="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
+                            <a href="#" title="Editar" ><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="#" title="Borrar" ><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>               
+                        <tr>
+                          <td>10/2022</td>
+                          <td>PAGO</td>
+                          <td>CUOTA BASICA</td>
+                          <td>$ 4500</td>
+                          <td>05/10/2022</td>
+                          <td><a href="#" title="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
+                            <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>                        
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %} FIN PAGOS {% endcomment %}
+
+          {% comment %} MEDICIONES {% endcomment %}
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                {% comment %} header {% endcomment %}
+                <div class="card-header">
+                  <h5 class="card-title">Control de Medidas</h5>
+                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical'></i> Nuevo Medicion</a>
+                  <a href="#" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-history'></i> Historial de Mediciones</a>
+                  <a href="#" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-stats'></i> Stats</a>
+                </div>
+                {% comment %} body {% endcomment %}
+                <div class="card-body">
+                  <div class="card-body table-responsive p-0">
+
+                  
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th>Fecha de Control</th>
+                          <th>Peso</th>
+                          <th>Medicion Cintura</th>
+                          <th>Medicion Bicep</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>10/10/2022</td>
+                          <td>98.5 Kg</td>
+                          <td>125 cm</td>
+                          <td>22 cm</td>
+                          <td><a href="#" title="Ver Completo"><i class='bx bx-show bx-sm'></i> </a>
+                            <a href="#" title="Editar" ><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="#" title="Borrar" ><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>               
+                        <tr>
+                          <td>10/11/2022</td>
+                          <td>97.5 Kg</td>
+                          <td>122 cm</td>
+                          <td>24 cm</td>
+                          <td><a href="#" title="Ver Completo"><i class='bx bx-show bx-sm'></i> </a>
+                            <a href="#" title="Editar" ><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="#" title="Borrar" ><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr> 
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %} FIN MEDICIONES {% endcomment %}
+
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->

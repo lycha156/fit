@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Socios</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Socios (Nuevo)</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              <div class="card card-primary card-outline">
+
+                <div class="card-header">
+                  <h5 class="card-title">Socios</h5>
+
+                </div>
+
+                <form action="" method="POST">
+                    <div class="card-body">
+                        
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="concepto">Apellido</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.apellido}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="monto">Nombre</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.nombre}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="fechanacimiento">Fecha de Nacimiento</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.fechanacimiento}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="dni">DNI</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.dni}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="direccion">Direccion</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.direccion}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="telefono">Telefono</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.telefono}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.email}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="estado">Estado</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.estado}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="cuota">Tipo de Cuota</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.cuota}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="observaciones">Observaciones</label>
+                                        {% comment %} <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> {% endcomment %}
+                                        {{form.observaciones}}
+                                    </div>
+                                </div>
+                            </div>
+                                
+                        
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+                
+
+
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+{% endblock content %}

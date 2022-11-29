@@ -14,14 +14,16 @@ class Socio(models.Model):
     direccion = models.CharField("Direccion", max_length=50)
     email = models.EmailField("Email", max_length=254)
     estado = models.CharField("Estado", max_length=50, choices=ESTADO_SOCIO)
-    obsevaciones = models.TextField("Observaciones")
+    observaciones = models.TextField("Observaciones")
     cuota = models.ForeignKey("socios.Cuota", on_delete=models.RESTRICT, related_name="cuota_socio")
 
+    def __str__(self):
+        return f'{self.apellido}, {self.nombre}'
 
 class Cuota(models.Model):
     concepto = models.CharField("Concepto", max_length=50)
     monto = models.FloatField("Monto")
 
     def  __str__(self):
-        return f"{self.concepto} - {self.monto}"
+        return f"{self.concepto} - $ {self.monto}"
     

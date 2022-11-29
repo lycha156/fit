@@ -27,6 +27,22 @@
           <div class="row">
 
             <div class="col-lg">
+
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+
               {% comment %} <div class="card card-primary card-outline">
                 <div class="card-header">
                   <h5 class="m-0 float-left">Featured</h5>
@@ -67,12 +83,17 @@
                 <div class="card-header">
                   <h5 class="card-title">Socios</h5>
 
-                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical'></i> Nuevo</a>
+                  <a href="{% url 'socios_create' %}" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical'></i> Nuevo</a>
 
                 </div>
                 <!-- /.card-header -->
+                <div class="card-body">
+
+                
+                {% if socios %}
                 <div class="card-body table-responsive p-0">
 
+                  
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
@@ -84,44 +105,33 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Castaña, Cacho</td>
-                        <td>Activo</td>
-                        <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
-                        <td>Al Dia</td>
-                        <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
-                      </tr>
-                      <tr>
-                        <td>Florencia, Algo</td>
-                        <td>Activo</td>
-                        <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
-                        <td>Al Dia</td>
-                        <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
-                      </tr>
-                      <tr>
-                        <td>Ignacio, Loquesea</td>
-                        <td>Activo</td>
-                        <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
-                        <td>Al Dia</td>
-                        <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
-                      </tr>
-                      <tr>
-                        <td>Franco, Quincho</td>
-                        <td>Activo</td>
-                        <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
-                        <td>Al Dia</td>
-                        <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
-                      </tr>
+                      
+                        {% for socio in socios %}
+                        <tr>
+                          <td>{{socio.apellido}}, {{socio.nombre}}</td>
+                          <td>{{socio.estado}}</td>
+                          <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
+                          <td>Al Dia</td>
+                          <td><a href="{% url 'socios_show' socio.id %}"><i class='bx bx-show bx-sm' ></i> </a>
+                            <a href="{% url 'socios_update' socio.id %}"><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="{% url 'socios_delete' socio.id %}"><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>
+                        {% endfor %}
+                      
+                      
+                      
                     </tbody>
                   </table>
+                  
+                </div>
+                {% else %}
+                  <div class="row">
+                    <div class="col-12">
+                      <p>No existen registros de socios para mostrar.-</p>
+                    </div>
+                  </div>
+                    
+                  {% endif %}
                 </div>
                 <!-- /.card-body -->
               </div>

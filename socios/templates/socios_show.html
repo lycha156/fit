@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Socios</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Socios (Ver)</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              <div class="card card-primary card-outline">
+
+                <div class="card-header">
+                    <h5 class="card-title">Perfil de Socio - {{socio.apellido}}, {{socio.nombre}}</h5>
+                    <a href="{% url 'socios_update' socio.id %}" class="btn btn-primary btn-sm float-right"><i class='bx bxs-edit' ></i> Editar</a>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">ESTADO
+                                  <b class="d-block">{{socio.estado}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">FECHA INCIO
+                                  <b class="d-block">15 de Noviembre de 2022</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">TIPO DE CUOTA
+                                  <b class="d-block">{{socio.cuota}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">PAGOS
+                                  <b class="d-block">Al Dia</b>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">DNI
+                                  <b class="d-block">{{socio.dni}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">FECHA NACIMIENTO
+                                  <b class="d-block">{{socio.fechanacimiento}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">HORARIOS
+                                  <b class="d-block">Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</b>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">DIRECCION
+                                  <b class="d-block">{{socio.direccion}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">TELEFONO
+                                  <b class="d-block">{{socio.telefono}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="text-muted">
+                                <p class="text-sm">EMAIL
+                                  <b class="d-block">{{socio.email}}</b>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    
+                </div>        
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+{% endblock content %}

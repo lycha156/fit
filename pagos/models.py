@@ -1,10 +1,6 @@
 from django.db import models
 from socios.models import Socio
 
-class Cuota(models.Model):
-    concepto = models.CharField("Concepto", max_length=50)
-    monto = models.FloatField("Monto")
-
 class Pago(models.Model):
     ESTADO_PAGO = [
         ('PAGO', 'Pago'),

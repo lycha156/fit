@@ -1,5 +1,4 @@
 from django.db import models
-from pagos.models import Cuota
 
 class Socio(models.Model):
     ESTADO_SOCIO = [
@@ -16,5 +15,13 @@ class Socio(models.Model):
     email = models.EmailField("Email", max_length=254)
     estado = models.CharField("Estado", max_length=50, choices=ESTADO_SOCIO)
     obsevaciones = models.TextField("Observaciones")
-    cuota = models.ForeignKey(Cuota, verbose_name="Cuota", on_delete=models.RESTRICT, related_name="cuota_socio")
+    cuota = models.ForeignKey("socios.Cuota", on_delete=models.RESTRICT, related_name="cuota_socio")
 
+
+class Cuota(models.Model):
+    concepto = models.CharField("Concepto", max_length=50)
+    monto = models.FloatField("Monto")
+
+    def  __str__(self):
+        return f"{self.concepto} - {self.monto}"
+    

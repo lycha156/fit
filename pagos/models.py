@@ -15,3 +15,6 @@ class Pago(models.Model):
     monto = models.FloatField("Monto")
     fechapago = models.DateField("Fecha de Pago", blank=True, null=True, auto_now_add=False)
 
+    def __str__(self):
+        return f'{self.socio} ({self.mes}/{self.año} - {self.estado}) Concepto: {self.concepto} $ {self.monto}.-'
+

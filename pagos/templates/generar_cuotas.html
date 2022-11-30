@@ -43,11 +43,47 @@
               {% comment %} FIN ALERTAS {% endcomment %}
               {% endif %}
 
+              {% comment %} <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5 class="m-0 float-left">Featured</h5>
+                  <a href="#" class="btn btn-primary btn-sm float-right">Nuevo</a>
+                </div>
+                <div class="card-body">
+                  <h6 class="card-title">Special title treatment</h6>
+  
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div> {% endcomment %}
+
+              {% comment %} <div class="card card-primary card-outline collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">Busqueda</h3>
+                    <div class="card-tools">
+                        <!-- This will cause the card to collapse when clicked -->
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>                       
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-md-center mt-3 mb-3">
+                        <div class="col-10">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control">
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-info btn-flat">Buscar</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+              </div> {% endcomment %}
+
               <div class="card card-primary card-outline">
                 <div class="card-header">
                   <h5 class="card-title">Pagos</h5>
 
-                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Generar Cuotas</a>
+                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Generar Cuotas</a>
 
                 </div>
                 <!-- /.card-header -->
@@ -118,62 +154,4 @@
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->
-
-
-      <!-- MODAL GENERAR CUOTAS -->
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form action="{% url 'generar_cuotas' %}" method="POST">
-              {% csrf_token %}
-              <div class="modal-body">
-
-                <div class="row">
-                  <div class="col-12">
-                      <div class="form-group">
-                          <label for="mes">Mes</label>
-                          <select class="form-control" name="mes" id="mes">
-                            <option value="1">(1) Enero</option>
-                            <option value="2">(2) Febrero</option>
-                            <option value="3">(3) Marzo</option>
-                            <option value="4">(4) Abril</option>
-                            <option value="5">(5) Mayo</option>
-                            <option value="6">(6) Junio</option>
-                            <option value="7">(7) Julio</option>
-                            <option value="8">(8) Agosto</option>
-                            <option value="9">(9) Septiembre</option>
-                            <option value="10">(10) Octubre</option>
-                            <option value="11">(11) Noviembre</option>
-                            <option value="12">(12) Diciembre</option>
-                          </select>
-                      </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-12">
-                      <div class="form-group">
-                          <label for="año">Mes</label>
-                          <input class="form-control" type="number" name="año" id="año" value="2022">
-                      </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Guardar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!-- FIN MODAL GENERAR CUOTAS -->
 {% endblock content %}

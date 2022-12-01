@@ -81,9 +81,33 @@ def marcar_pago(request, id=id):
         messages.warning(request, f'Error al actualizar los datos. {e}')
         return redirect('pagos_index')
 
+# busqueda de pagos asociados a socio
 def pagos_socio(request, id=id):
     pagos = Pago.objects.filter(socio = id)
     context = {
         'pagos': pagos
     }
     return render(request, 'pagos_index.html', context)
+
+# Nuevo cargo para socio especifico
+def nuevo_cargo(request, id=id):
+    socio = get_object_or_404(Socio, pk=id)
+    form = PagoForm(request.POST or None)
+
+    if form.is_valid():
+        socio_id = request.POST.get('socio')
+        try:
+            instancia = form.save(commit=False)
+            instancia.socio = Socio.objects.get(pk = socio_id)
+            instancia.save()
+            messages.success(request, 'Datos guardados con exito.-')
+            return redirect('socios_show', socio_id) 
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('socios_show', socio_id) 
+
+    context = {
+        'socio': socio,
+        'form': form
+    }
+    return render(request, 'pagos_create.html', context)

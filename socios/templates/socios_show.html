@@ -25,6 +25,25 @@
       <div class="content">
         <div class="container-fluid">
 
+          <div class="row">
+            <div class="col-lg">
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+            </div>
+          </div>
+
           {% comment %} PERFIL DEL SOCIO {% endcomment %}
           <div class="row">
 
@@ -193,7 +212,7 @@
                 {% comment %} header {% endcomment %}
                 <div class="card-header">
                   <h5 class="card-title">Pagos</h5>
-                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Nuevo Cargo</a>
+                  <a href="{% url 'pagos_nuevo_cargo' socio.id %}" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Nuevo Cargo</a>
                   <a href="{% url 'pagos_socio' socio.id %}" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-history'></i> Historial de Pagos</a>
                 </div>
                 {% comment %} body {% endcomment %}
@@ -204,8 +223,9 @@
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
-                          <th>Fecha de Cuota (Mes/Año)</th>
+                          <th></th>
                           <th>Estado</th>
+                          <th>Fecha de Cuota (Mes/Año)</th>
                           <th>Concepto</th>
                           <th>Monto</th>
                           <th>Fecha de Pago</th>
@@ -215,8 +235,13 @@
                       <tbody>
                         {% for pago in pagos %}
                         <tr>
-                          <td>{{pago.mes}}/{{pago.año}}</td>
+                          {% if pago.estado == 'IMPAGO' %}
+                            <td><i class='bx bx-error' style="Color: red;"></i></td>                            
+                          {% else %}
+                            <td></td>
+                          {% endif %}
                           <td>{{pago.estado}}</td>
+                          <td>{{pago.mes}}/{{pago.año}}</td>
                           <td>{{pago.concepto}}</td>
                           <td>$ {{pago.monto}}</td>
                           {% if pago.fechapago == None %}

@@ -40,6 +40,8 @@
                         
                             {% csrf_token %}
                             
+                            <input type="hidden" name="socio" value="{{socio.id}}">
+
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">

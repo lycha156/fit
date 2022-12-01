@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Cuota, Socio
 from .forms import CuotaForm, SocioForm
+from pagos.models import Pago
+from django.db.models import Q
 
 # SOCIOS
 def index(request):
@@ -68,8 +70,16 @@ def delete(request, id=id):
 
 def show(request, id=id):
     socio = get_object_or_404(Socio, pk=id)
+    pagos = Pago.objects.filter(socio = socio.id)[:5]
+    if Pago.objects.filter( Q(socio = socio.id) and Q(estado = 'IMPAGO') ).count() == 0:
+        aldia = 'Al Dia'
+    else:
+        aldia = 'Con Deuda'
+
     context = {
-        'socio': socio
+        'socio': socio,
+        'pagos': pagos,
+        'aldia': aldia
     }
     return render(request, 'socios_show.html', context)
 

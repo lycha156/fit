@@ -80,3 +80,10 @@ def marcar_pago(request, id=id):
     except Exception as e:
         messages.warning(request, f'Error al actualizar los datos. {e}')
         return redirect('pagos_index')
+
+def pagos_socio(request, id=id):
+    pagos = Pago.objects.filter(socio = id)
+    context = {
+        'pagos': pagos
+    }
+    return render(request, 'pagos_index.html', context)

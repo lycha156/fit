@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     # PAGOS
     path('', views.index, name="pagos_index"),
+    path('socio/<int:id>', views.pagos_socio, name="pagos_socio"),
     # path('create', views.create, name="socios_create"),
     path('update/<int:id>', views.update, name="pagos_update"),
     # path('show/<int:id>', views.show, name="socios_show"),

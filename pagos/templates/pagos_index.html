@@ -74,7 +74,7 @@
 
                       {% for pago in pagos %}
                       <tr>
-                        <td>{{pago.socio.apellido}}, {{pago.socio.nombre}}</td>
+                        <td><a href="{% url 'socios_show' pago.socio.id %}"><strong>{{pago.socio.apellido}}, {{pago.socio.nombre}}</strong></a></td>
                         <td>{{pago.mes}}/{{pago.año}}</td>
                         <td>{{pago.estado}}</td>
                         <td>{{pago.concepto}}</td>

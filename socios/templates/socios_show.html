@@ -68,7 +68,7 @@
                         <div class="col-lg-3 col-sm-12">
                             <div class="text-muted">
                                 <p class="text-sm">PAGOS
-                                  <b class="d-block">Al Dia</b>
+                                  <b class="d-block">{{aldia}}</b>
                                 </p>
                             </div>
                         </div>
@@ -194,7 +194,7 @@
                 <div class="card-header">
                   <h5 class="card-title">Pagos</h5>
                   <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Nuevo Cargo</a>
-                  <a href="#" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-history'></i> Historial de Pagos</a>
+                  <a href="{% url 'pagos_socio' socio.id %}" class="btn btn-info btn-sm float-right mr-2"><i class='bx bx-history'></i> Historial de Pagos</a>
                 </div>
                 {% comment %} body {% endcomment %}
                 <div class="card-body">
@@ -213,26 +213,26 @@
                         </tr>
                       </thead>
                       <tbody>
+                        {% for pago in pagos %}
                         <tr>
-                          <td>11/2022</td>
-                          <td>IMPAGO</td>
-                          <td>CUOTA BASICA</td>
-                          <td>$ 4500</td>
-                          <td></td>
-                          <td><a href="#" title="Marcar como pagado" alt="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
-                            <a href="#" title="Editar" ><i class='bx bxs-edit bx-sm' ></i> </a>
-                            <a href="#" title="Borrar" ><i class='bx bx-trash bx-sm'></i> </a></td>
-                        </tr>               
-                        <tr>
-                          <td>10/2022</td>
-                          <td>PAGO</td>
-                          <td>CUOTA BASICA</td>
-                          <td>$ 4500</td>
-                          <td>05/10/2022</td>
-                          <td><a href="#" title="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
-                            <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
-                            <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a></td>
-                        </tr>                        
+                          <td>{{pago.mes}}/{{pago.año}}</td>
+                          <td>{{pago.estado}}</td>
+                          <td>{{pago.concepto}}</td>
+                          <td>$ {{pago.monto}}</td>
+                          {% if pago.fechapago == None %}
+                          <td> </td>
+                          {% else %}
+                            <td>{{pago.fechapago}}</td>
+                          {% endif %}
+                          <td>             
+                            <a href="{% url 'pagos_update' pago.id %}" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="{% url 'pagos_delete' pago.id %}" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                            {% if pago.estado == 'IMPAGO' %}
+                            <a href="{% url 'marcar_pago' pago.id %}" title="Marcar como pagado" alt="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
+                            {% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                      
                       </tbody>
                     </table>
                     

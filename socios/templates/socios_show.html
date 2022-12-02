@@ -170,35 +170,43 @@
                 {% comment %} header {% endcomment %}
                 <div class="card-header">
                   <h5 class="card-title">Documentacion</h5>
-                  <a href="#" class="btn btn-primary btn-sm float-right"><i class='bx bx-cloud-upload'></i> Cargar</a>
+                  <a href="{% url 'documentos_create' socio.id %}" class="btn btn-primary btn-sm float-right"><i class='bx bx-cloud-upload'></i> Cargar</a>
                 </div>
                 {% comment %} body {% endcomment %}
                 <div class="card-body">
-                  <div class="card-body table-responsive p-0">
 
-                  
+                  {% if documentos %}
+                  <div class="card-body table-responsive p-0">
+                 
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
                           <th>Fecha de Carga</th>
                           <th>Descripcion</th>
-                          <th>Tipo Archivo</th>
+                          <th>Extension</th>
                           <th>Acciones</th>
                         </tr>
                       </thead>
-                      <tbody>                    
+                      <tbody>                 
+
+                        {% for documento in documentos %}
                         <tr>
-                          <td>15/10/2022</td>
-                          <td>Certificado Medico</td>
-                          <td>DOC</td>
-                          <td><a href="#"><i class='bx bx-show bx-sm' ></i> </a>
-                            <a href="#"><i class='bx bxs-edit bx-sm' ></i> </a>
-                            <a href="#"><i class='bx bx-trash bx-sm'></i> </a></td>
-                        </tr>                        
+                          <td>{{documento.fecha}}</td>
+                          <td>{{documento.descripcion}}</td>
+                          <td>{{documento.documento.name}}</td>
+                          <td><a href="{{documento.documento.url}}" target="_blank"><i class='bx bx-show bx-sm' ></i> </a>
+                            <a href="{% url 'documentos_update' documento.id %}"><i class='bx bxs-edit bx-sm' ></i> </a>
+                            <a href="{% url 'documentos_delete' documento.id %}"><i class='bx bx-trash bx-sm'></i> </a></td>
+                        </tr>
+                        {% endfor %}   
+
                       </tbody>
                     </table>
                     
                   </div>
+                  {% else %}
+                  <p>El socio no posee documentos asociados</p>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -217,9 +225,10 @@
                 </div>
                 {% comment %} body {% endcomment %}
                 <div class="card-body">
-                  <div class="card-body table-responsive p-0">
 
+                  {% if pagos %}
                   
+                  <div class="card-body table-responsive p-0">                
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
@@ -262,6 +271,9 @@
                     </table>
                     
                   </div>
+                  {% else %}
+                  <p>El socio no posee ningun pagos o cuotas registradas.-</p>
+                  {% endif %}
                 </div>
               </div>
             </div>

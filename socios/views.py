@@ -4,6 +4,7 @@ from .models import Cuota, Socio
 from .forms import CuotaForm, SocioForm
 from pagos.models import Pago
 from django.db.models import Q
+from documentos.models import Documento
 
 # SOCIOS
 def index(request):
@@ -71,6 +72,7 @@ def delete(request, id=id):
 def show(request, id=id):
     socio = get_object_or_404(Socio, pk=id)
     pagos = Pago.objects.filter(socio = socio.id)[:5]
+    documentos = Documento.objects.filter(socio = socio.id)
     if Pago.objects.filter( Q(socio = socio.id) and Q(estado = 'IMPAGO') ).count() == 0:
         aldia = 'Al Dia'
     else:
@@ -79,7 +81,8 @@ def show(request, id=id):
     context = {
         'socio': socio,
         'pagos': pagos,
-        'aldia': aldia
+        'aldia': aldia,
+        'documentos': documentos
     }
     return render(request, 'socios_show.html', context)
 

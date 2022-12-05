@@ -7,29 +7,8 @@ import datetime
 from django.db.models import Q
 
 def index(request):
-
-    if request.method == 'POST':
-        query = request.POST.get('q')
-        mes = request.POST.get('mes')
-        año = request.POST.get('año')
-        estado = request.POST.get('estado')
-        fecha = request.POST.get('fecha')
-        pagos = Pago.objects.filter( Q(socio__nombre__icontains = query) | Q(socio__apellido__icontains = query) )
-        if (mes != "0"):
-            pagos = pagos.filter( mes = mes)
-        if( año != ""):
-            pagos = pagos.filter( año = año)
-            print(pagos)
-        if( estado != ""):
-            pagos = pagos.filter( estado = estado)
-        if( fecha != ""):
-            pagos = pagos.filter(fechapago = fecha)
-
-    else:
-        pagos = Pago.objects.all()
-
-    meses = [
-        {'id': 0, 'valor': '-TODOS-'},
+    MESES = [
+        {'id': 0, 'valor': '-Todos-'},
         {'id': 1, 'valor': '(1) Enero'},
         {'id': 2, 'valor': '(2) Febrero'},
         {'id': 3, 'valor': '(3) Marzo'},
@@ -44,14 +23,49 @@ def index(request):
         {'id': 12,'valor': '(12) Diciembre'},
     ]
 
+    ESTADOS = [
+        {'id': "", 'valor': '-Todos-'},
+        {'id': 'PAGO', 'valor': 'Pagos'},
+        {'id': 'IMPAGO', 'valor': 'Impagos'}
+    ]
+
+    if request.method == 'POST':
+        query = request.POST.get('q')
+        mes = request.POST.get('mes')
+        año = request.POST.get('año')
+        estado = request.POST.get('estado')
+        fecha = request.POST.get('fecha')
+        pagos = Pago.objects.filter( Q(socio__nombre__icontains = query) | Q(socio__apellido__icontains = query) )
+        if (mes != "0"):
+            pagos = pagos.filter( mes = mes)
+        if( año != ""):
+            pagos = pagos.filter( año = año)
+        if( estado != ""):
+            pagos = pagos.filter( estado = estado)
+        if( fecha != ""):
+            pagos = pagos.filter(fechapago = fecha)
+
+        context = {
+            'pagos': pagos,
+            'q': query,
+            'meses': MESES,
+            'mes': mes,
+            'año': año,
+            'estado': estado,
+            'estados': ESTADOS,
+            'fecha': fecha,
+        }
+        return render(request, 'pagos_index.html', context)
+
+    else:
+        pagos = Pago.objects.all()
+
+    
+
     context = {
         'pagos': pagos,
-        'q': query,
-        'meses': meses,
-        'mes': mes,
-        'año': año,
-        'estado': estado,
-        'fecha': fecha,
+        'meses': MESES,
+        'estados': ESTADOS,
     }
     return render(request, 'pagos_index.html', context)
 

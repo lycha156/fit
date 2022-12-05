@@ -43,6 +43,18 @@
               {% comment %} FIN ALERTAS {% endcomment %}
               {% endif %}
               
+              <script>
+                function ClearFields() {
+
+                  document.getElementById("q").value = "";
+                  document.getElementById("año").value = "";
+                  document.getElementById("fecha").value = "";
+                  document.getElementById("mes").value = "0";
+                  document.getElementById("estado").value = "";
+
+                }
+              </script>
+
               <div class="card card-primary card-outline collapsed-card">
                 
                 <div class="card-header">
@@ -51,7 +63,7 @@
                         <div class="col-11">
                           {% csrf_token %}
                           <div class="input-group input-group-sm">
-                            <input type="text" name="q" class="form-control" value="{{q}}">
+                            <input type="text" id="q" name="q" class="form-control" value="{{q}}">
                             <span class="input-group-append">
                             <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
                             </span>
@@ -59,7 +71,8 @@
                         </div>  
                         
                         <div class="col-1">
-                          <button class="btn btn-primary btn-flat btn-sm" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                          <button class="btn btn-primary btn-flat btn-sm float-right" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                          <button title="Limpiar Filtros" onclick="ClearFields();" type=2button class="btn btn-primary btn-flat btn-sm float-right mr-3"><i class='bx bx-reset'></i></button>
                         </div>
                       </div>
                   
@@ -71,8 +84,12 @@
                         <div class="form-group">
                           <label for="mes">Mes</label>
                           <select class="form-control" name="mes" id="mes">
-                            {% for mess in meses %}
-                            <option value="{{mess.id}}" >{{mess.valor}}</option>
+                            {% for mess in meses %} 
+                              {% if mess.id == mes %}
+                              <option value="{{mess.id}}" selected>{{mess.valor}}</option>
+                              {% else %}
+                              <option value="{{mess.id}}">{{mess.valor}}</option>
+                              {% endif %}
                             {% endfor %}
                           </select>
                       </div>
@@ -80,16 +97,20 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="año">Año</label>
-                        <input type="number" class="form-control" name="año" value="{{año}}">
+                        <input type="number" class="form-control" name="año" id="año" value="{{año}}">
                       </div>
                     </div>
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="estado">Estado</label>
                         <select name="estado" id="estado" class="form-control">
-                          <option value="">-Todos-</option>
-                          <option value="PAGO">Pagos</option>
-                          <option value="IMPAGO">Impagos</option>
+                          {% for estadoo in estados %}
+                            {% if estadoo.id == estado %}
+                              <option value="{{estadoo.id}}" selected>{{estadoo.valor}}</option>
+                            {% else %}
+                              <option value="{{estadoo.id}}">{{estadoo.valor}}</option>
+                            {% endif %}
+                          {% endfor %}
                         </select>
                       </div>
                     </div>

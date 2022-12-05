@@ -26,7 +26,7 @@ class PagoForm(forms.ModelForm):
     class Meta:
         model = Pago
         fields = [
-            'socio',
+            # 'socio',
             'mes',
             'año',
             'estado',
@@ -35,8 +35,7 @@ class PagoForm(forms.ModelForm):
             'fechapago'
         ]
     
-    # socio = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Concepto', 'required': 'required'}), required=False)
-    socio = forms.ModelChoiceField(Socio.objects.all(), empty_label=None, widget=forms.Select( attrs={ 'class': 'form-control', 'placeholder': 'Socio'} ))
+    # socio = forms.ModelChoiceField(Socio.objects.all(), empty_label=True, widget=forms.Select( attrs={ 'class': 'form-control', 'placeholder': 'Socio'} ), required=False)
     mes = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Mes', 'required': 'required', 'autofocus': 'autofocus'}) , choices=MESES)
     año = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'required': 'required'}))
     estado = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Estado', 'required': 'required'}) , choices=ESTADO_PAGO)

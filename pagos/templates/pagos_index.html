@@ -42,6 +42,67 @@
                 {% endfor %}
               {% comment %} FIN ALERTAS {% endcomment %}
               {% endif %}
+              
+              <div class="card card-primary card-outline collapsed-card">
+                
+                <div class="card-header">
+                  <form action="" method="POST">
+                      <div class="row">
+                        <div class="col-11">
+                          {% csrf_token %}
+                          <div class="input-group input-group-sm">
+                            <input type="text" name="q" class="form-control" value="{{q}}">
+                            <span class="input-group-append">
+                            <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
+                            </span>
+                          </div>    
+                        </div>  
+                        
+                        <div class="col-1">
+                          <button class="btn btn-primary btn-flat btn-sm" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                        </div>
+                      </div>
+                  
+                </div>
+                
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="mes">Mes</label>
+                          <select class="form-control" name="mes" id="mes">
+                            {% for mess in meses %}
+                            <option value="{{mess.id}}" >{{mess.valor}}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="año">Año</label>
+                        <input type="number" class="form-control" name="año" value="{{año}}">
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select name="estado" id="estado" class="form-control">
+                          <option value="">-Todos-</option>
+                          <option value="PAGO">Pagos</option>
+                          <option value="IMPAGO">Impagos</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" name="fecha" id="fecha" class="form-control" value="{{fecha}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              </div>
 
               <div class="card card-primary card-outline">
                 <div class="card-header">

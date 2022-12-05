@@ -4,11 +4,54 @@ from socios.models import Socio, Cuota
 from .models import Pago
 from .forms import PagoForm
 import datetime
+from django.db.models import Q
 
 def index(request):
-    pagos = Pago.objects.all()
+
+    if request.method == 'POST':
+        query = request.POST.get('q')
+        mes = request.POST.get('mes')
+        año = request.POST.get('año')
+        estado = request.POST.get('estado')
+        fecha = request.POST.get('fecha')
+        pagos = Pago.objects.filter( Q(socio__nombre__icontains = query) | Q(socio__apellido__icontains = query) )
+        if (mes != "0"):
+            pagos = pagos.filter( mes = mes)
+        if( año != ""):
+            pagos = pagos.filter( año = año)
+            print(pagos)
+        if( estado != ""):
+            pagos = pagos.filter( estado = estado)
+        if( fecha != ""):
+            pagos = pagos.filter(fechapago = fecha)
+
+    else:
+        pagos = Pago.objects.all()
+
+    meses = [
+        {'id': 0, 'valor': '-TODOS-'},
+        {'id': 1, 'valor': '(1) Enero'},
+        {'id': 2, 'valor': '(2) Febrero'},
+        {'id': 3, 'valor': '(3) Marzo'},
+        {'id': 4, 'valor': '(4) Abril'},
+        {'id': 5, 'valor': '(5) Mayo'},
+        {'id': 6, 'valor': '(6) Junio'},
+        {'id': 7, 'valor': '(7) Julio'},
+        {'id': 8, 'valor': '(8) Agosto'},
+        {'id': 9, 'valor': '(9) Septiembre'},
+        {'id': 10,'valor': '(10) Octubre'},
+        {'id': 11,'valor': '(11) Noviembre'},
+        {'id': 12,'valor': '(12) Diciembre'},
+    ]
+
     context = {
-        'pagos': pagos
+        'pagos': pagos,
+        'q': query,
+        'meses': meses,
+        'mes': mes,
+        'año': año,
+        'estado': estado,
+        'fecha': fecha,
     }
     return render(request, 'pagos_index.html', context)
 

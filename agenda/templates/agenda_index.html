@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Agenda - Calendario</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Agenda</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+              
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="hidden" name="display" value="dayGridMonth">
+                                    <select name="mes" id="mes" class="form-control">
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                    <span class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    </span>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="hidden" name="display" value="timeGridDay">
+                                    <input class="form-control" type="date" name="dia" id="dia">
+                                    <span class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                </div>
+
+              </div>
+
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div id='calendar'></div>      
+                </div>
+              </div>
+              
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+
+      <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: '{{initialView}}',
+            locales: 'es',
+            /*headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,list'
+            },*/
+            initialDate: '{{initialDate}}',
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: ''
+            },
+            events: {{eventos|safe}},
+            backgroundColor: 'yellow',   // an option!
+            borderColor: 'black' // an option!
+            });
+          calendar.render();
+        });
+  
+      </script>
+
+{% endblock content %}

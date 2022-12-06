@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('socios.urls')),
     path('pagos/', include('pagos.urls')),
     path('documentos/', include('documentos.urls')),
+    path('agenda/', include('agenda.urls')),
 ]
 
 if settings.DEBUG:

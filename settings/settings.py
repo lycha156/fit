@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'pagos',
     'mediciones',
     'documentos',
+    'agenda',
 ]
 
 MIDDLEWARE = [

@@ -46,16 +46,26 @@
               <div class="card card-primary card-outline">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <form action="" method="POST">
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <input type="hidden" name="display" value="dayGridMonth">
                                     <select name="mes" id="mes" class="form-control">
+                                        <option value="1">Enero</option>
+                                        <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5">Mayo</option>
+                                        <option value="6">Junio</option>
+                                        <option value="7">Julio</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option>
                                         <option value="10">Octubre</option>
                                         <option value="11">Noviembre</option>
                                         <option value="12">Diciembre</option>
                                     </select>
+                                    <input type="number" class="form-control" name="año" id="año" value="{{año}}">
                                     <span class="input-group-append">
                                         <button type="submit" class="btn btn-primary">Buscar</button>
                                     </span>
@@ -63,7 +73,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <form action="" method="POST">
                                 {% csrf_token %}
                                 <div class="input-group">
@@ -75,6 +85,11 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="col-lg-2">
+                          <a href="{% url 'agenda_index' %}" title="Hoy" class="btn btn-primary float-right"><i class='bx bx-calendar-check'></i></a>
+                          <a href="{% url 'agenda_create_turno' %}" title="Nuevo Turno" class="btn btn-primary float-right mr-2"><i class='bx bx-calendar-plus'></i></a>
+                          <a href="{% url 'agenda_create_evento' %}" title="Nuevo Evento" class="btn btn-primary float-right mr-2"><i class='bx bx-calendar-star'></i></a>
+                        </div> 
                       </div>
                 </div>
 
@@ -114,8 +129,14 @@
                 right: ''
             },
             events: {{eventos|safe}},
-            backgroundColor: 'yellow',   // an option!
-            borderColor: 'black' // an option!
+            eventClick: function(info) {
+              alert('Event: ' + info.event.id);
+              //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+              //alert('View: ' + info.view.type);
+            },
+            /*eventMouseEnter: function(mouseEnterInfo ){
+              mouseEnterInfo.el.style.borderColor = 'black';
+            }*/
             });
           calendar.render();
         });

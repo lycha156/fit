@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Agenda
+from .forms import AgendaFormTurno, AgendaFormEvento
 import datetime
+from django.db.models import Q
+from django.contrib import messages
 
 def index(request):
     # inicializar variables
@@ -11,8 +14,9 @@ def index(request):
         if request.POST.get('display') == 'dayGridMonth':
             try:
                 mes = request.POST.get('mes')
-                eventos = Agenda.objects.filter(fecha__month = mes)
-                context.update({'initialDate': f'{datetime.date.today().year}-{mes}-01', 'initialView': 'dayGridMonth'})
+                año = request.POST.get('año')
+                eventos = Agenda.objects.filter( Q(fecha__month = mes) & Q(fecha__year = año))
+                context.update({'initialDate': f'{año}-{mes}-01', 'initialView': 'dayGridMonth'})
             except Exception as e:
                 print(f'{e}')
         elif request.POST.get('display') == 'timeGridDay':
@@ -28,8 +32,48 @@ def index(request):
     
     # Comportamiento en comun para todos los casos
     # convertir datos en json
-    for  evento in eventos:
-            eventos_json.append({'title': f'{evento.socio}', 'start': f'{evento.fecha}T{evento.hora}'})
+    
 
-    context.update({'eventos': eventos_json})
+    for  evento in eventos:
+        if evento.socio == None:
+            eventos_json.append({'id': f'{evento.id}', 'title': f'{evento.titulo}', 'start': f'{evento.fecha}T{evento.hora}', 'backgroundColor': '#e75353', 'borderColor': '#e75353'})
+        else:
+            eventos_json.append({'id': f'{evento.id}', 'title': f'{evento.socio}', 'start': f'{evento.fecha}T{evento.hora}', 'backgroundColor': 'blue'})
+
+
+    context.update({'eventos': eventos_json, 'año': datetime.date.today().year})
     return render(request, 'agenda_index.html', context)
+
+def create_turno(request):
+    form = AgendaFormTurno(request.POST or None)
+
+    if form.is_valid():
+        try:
+            instancia = form.save()
+            messages.success(request, f'Turno de {instancia.socio} para el dia {instancia.fecha} - {instancia.hora}Hs fue cargado con exit.-')
+            return redirect('agenda_index') 
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('agenda_index') 
+
+    context = {
+        'form': form
+    }
+    return render(request, 'agenda_create_turno.html', context)
+
+def create_evento(request):
+    form = AgendaFormEvento(request.POST or None)
+
+    if form.is_valid():
+        try:
+            instancia = form.save()
+            messages.success(request, f'El evento "{instancia.titulo}" para el dia {instancia.fecha} - {instancia.hora}Hs fue cargado con exit.-')
+            return redirect('agenda_index') 
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('agenda_index') 
+
+    context = {
+        'form': form
+    }
+    return render(request, 'agenda_create_evento.html', context)

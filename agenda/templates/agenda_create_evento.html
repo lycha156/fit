@@ -86,8 +86,19 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
-                        <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                      <div class="row">
+                        <div class="col-4">
+                          <a href="#" tabindex="-1" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        </div>
+                        <div class="col-4 text-center">
+                          {% if borrar == True %}
+                        <a href="{% url 'agenda_delete' evento_id %}" tabindex="-1" class="btn btn-danger"><i class='bx bx-trash'></i> Borrar</a>
+                        {% endif %}
+                        </div>
+                        <div class="col-4">
+                          <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                        </div>
+                      </div>
                     </div>
                 </form>
                 

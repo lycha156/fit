@@ -3,9 +3,7 @@
 {% load static %}
 
 {% block css %}
-<!-- SELECT2 -->
-<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
-<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+
 {% endblock css %}
 
 {% block content %}
@@ -14,12 +12,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Agenda - Turno</h1>
+              <h1 class="m-0">Agenda - Generar Turnos</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Agenda (Nuevo Turno)</li>
+                <li class="breadcrumb-item active">Agenda (Generar Turnos)</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -44,13 +42,8 @@
                 {% endfor %}
               {% comment %} FIN ALERTAS {% endcomment %}
               {% endif %}
-          
-          {% if form.errors %}
-          <div class="alert alert-danger">
-            {{ form.errors }}
-          </div>
-          {% endif %}
-          
+
+          {{ form.errors }}
           <div class="row">
 
             <div class="col-lg">
@@ -58,7 +51,7 @@
               <div class="card card-primary card-outline">
 
                 <div class="card-header">
-                  <h5 class="card-title">Agendar Turno</h5>
+                  <h5 class="card-title">Agenda</h5>
 
                 </div>
 
@@ -66,47 +59,45 @@
                     <div class="card-body">
                         
                             {% csrf_token %}
-                            
-                            <input type="hidden" name="titulo" value="">
 
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-6">
                                     <div class="form-group">
-                                        <label for="socio">Socio</label>
-                                        {{form.socio}}
-                                    </div>
+                                        <label for="mes">Mes</label>
+                                        <select name="mes" id="mes" class="form-control">
+                                            <option value="01">Enero</option>
+                                            <option value="02">Febrero</option>
+                                            <option value="03">Marzo</option>
+                                            <option value="04">Abril</option>
+                                            <option value="05">Mayo</option>
+                                            <option value="06">Junio</option>
+                                            <option value="07">Julio</option>
+                                            <option value="08">Agosto</option>
+                                            <option value="09">Septiembre</option>
+                                            <option value="10">Octubre</option>
+                                            <option value="11">Noviembre</option>
+                                            <option value="12">Diciembre</option>
+                                        </select>
+                                    </div>  
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="año">Año</label>
+                                        <input type="number" class="form-control" name="año" id="año" value="{{año}}">
+                                    </div>  
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="fecha">Fecha</label>
-                                        {{form.fecha}}
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="hora">Hora</label>
-                                        {{form.hora}}
-                                    </div>
-                                </div>
-                            </div>
-                                
+                                 
+                                                 
                         
                     </div>
 
                     <div class="card-footer">
                       <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                           <a href="#" tabindex="-1" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
                         </div>
-                        <div class="col-4 text-center">
-                          {% if borrar == True %}
-                        <a href="{% url 'agenda_delete' evento_id %}" tabindex="-1" class="btn btn-danger"><i class='bx bx-trash'></i> Borrar</a>
-                        {% endif %}
-                        </div>
-                        <div class="col-4">
+                        <div class="col-6">
                           <button type="submit" class="btn btn-primary float-right">Guardar</button>
                         </div>
                       </div>
@@ -128,13 +119,5 @@
 {% endblock content %}
 
 {% block scripts %}
-<!-- SELECT2 -->
-<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
-<script>
-  $(document).ready(function() {
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-  });
-});
-</script>
+
 {% endblock scripts %}

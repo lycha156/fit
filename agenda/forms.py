@@ -12,7 +12,7 @@ class AgendaFormTurno(forms.ModelForm):
             'hora'
         ]
 
-    socio = forms.ModelChoiceField(Socio.objects.all(), empty_label=None, widget=forms.Select( attrs={ 'class': 'form-control', 'placeholder': 'Socio'} ))
+    socio = forms.ModelChoiceField(Socio.objects.all(), empty_label=None, widget=forms.Select( attrs={ 'class': 'form-control select2bs4', 'placeholder': 'Socio'} ))
     titulo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'text'}), max_length=100, required=False)
     fecha = forms.DateField(widget=forms.DateInput(format = ('%Y-%m-%d'), attrs={'class': 'form-control', 'type': 'date'}))
     hora = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}))

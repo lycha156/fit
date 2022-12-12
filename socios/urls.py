@@ -15,4 +15,11 @@ urlpatterns = [
     path('cuotas/update/<int:id>', views.cuotas_update, name="cuotas_update"),
     # path('show/<int:id>', views.show, name="dependencias_show"),
     path('cuotas/delete/<int:id>', views.cuotas_delete, name="cuotas_delete"),
+
+    # HORARIOS
+    # path('cuotas', views.cuotas_index, name="cuotas_index"),
+    path('horarios/create/<int:id>', views.horarios_create, name="horarios_create"),
+    path('horarios/update/<int:id>', views.horarios_update, name="horarios_update"),
+    # path('show/<int:id>', views.show, name="dependencias_show"),
+    # path('cuotas/delete/<int:id>', views.cuotas_delete, name="cuotas_delete"),
 ]

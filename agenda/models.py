@@ -10,6 +10,10 @@ class Agenda(models.Model):
     titulo = models.CharField("Titulo", max_length=50, blank=True, null=True)
     fecha = models.DateField("Fecha Evento", auto_now=False, auto_now_add=False)
     hora = models.TimeField("Hora Evento", auto_now=False, auto_now_add=False)
+    generadoAuto = models.BooleanField("Generado Automaticamente", blank=True, null=True, default=False)
 
     def __str__(self):
-        return f'{self.socio} ({self.fecha}@{self.hora})'
+        nombreEvento = self.socio
+        if self.socio == None:
+            nombreEvento = self.titulo
+        return f'{nombreEvento} ({self.fecha}@{self.hora} Hs.)'

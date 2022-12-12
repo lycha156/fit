@@ -4,6 +4,8 @@ from .forms import AgendaFormTurno, AgendaFormEvento
 import datetime
 from django.db.models import Q
 from django.contrib import messages
+from socios.models import Socio, Horario
+import calendar
 
 def index(request):
     # inicializar variables
@@ -132,9 +134,93 @@ def delete(request, id=id):
         messages.warning(request, f'Error al eliminar los datos. Erros: {e}.-')
         return redirect('agenda_index')
 
+# AUTOMATICAMENTE ACTUALIZA LA AGENDA EN BASE A UN MES Y AÑO ESPECIFICADO POR EL USUARIO
+# Y LOS DIAS Y HORARIOS ASIGNADOS A LOS SOCIOS ACTIVOS.
 def generar_mes(request):
 
+    if request.method == 'POST':
+        # inicializar variables
+        mesGenerar = request.POST.get('mes')
+        añoGenerar = request.POST.get('año')
+        socios = Socio.objects.filter(estado = 'ACTIVO')
+        diasdelmes = []
+
+        # Generar listado de dias del mes a generar
+        calendar.setfirstweekday(calendar.SUNDAY)
+        mesTrabajo = calendar.monthcalendar(int(añoGenerar), int(mesGenerar))
+        for semana in mesTrabajo:
+            for dia in semana:
+                if dia != 0:
+                    diasdelmes.append({'numero_dia': datetime.date.isoweekday( datetime.date(int(añoGenerar), int(mesGenerar), int(dia)) ), 'dia': datetime.date(int(añoGenerar), int(mesGenerar), int(dia))})
+
+        # Buscar dias por socio y agregar dias a la agenda
+        try:
+            for socio in socios:
+                print(f'{socio}')
+                dias_socio = []
+                horario = Horario.objects.filter(socio = socio).first()
+                if horario.lunes == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 1:
+                            print(f'{socio} => {dia}')
+                            # dias_socio.append(dia)
+                            Agenda.objects.get_or_create(socio = socio, titulo = None, fecha = dia['dia'], hora = horario.lunesHorario, generadoAuto = True)
+                if horario.martes == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 2:
+                            # dias_socio.append(dia)   
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.martesHorario, generadoAuto = True)
+                if horario.miercoles == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 3:
+                            # dias_socio.append(dia) 
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.miercolesHorario, generadoAuto = True)
+                if horario.jueves == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 4:
+                            # dias_socio.append(dia)
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.juevesHorario, generadoAuto = True) 
+                if horario.viernes == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 5:
+                            # dias_socio.append(dia) 
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.viernesHorario, generadoAuto = True)
+                if horario.sabado == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 6:
+                            # dias_socio.append(dia)   
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.sabadoHorario, generadoAuto = True)
+                if horario.domingo == 1:
+                    for dia in diasdelmes:
+                        if dia['numero_dia'] == 7:
+                            # dias_socio.append(dia)  
+                            Agenda.objects.get_or_create(socio = socio,  titulo = None, fecha = dia['dia'], hora = horario.domingoHorario, generadoAuto = True)                  
+
+            messages.success(request, f'Agenda actualizada para el periodo {mesGenerar}/{añoGenerar}.-')
+            return redirect('agenda_index')
+
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar la agenda para el periodo {mesGenerar}/{añoGenerar}. Error: {e}.-')
+            return redirect('agenda_index')
+        
     context = {
-        'año': datetime.date.today().year
+        'año': datetime.date.today().year,
+        'mes_actual': datetime.date.today().month,
+        'meses': MESES
     }
     return render(request, 'agenda_generar_mes.html', context)
+
+MESES = [
+    {'id': 1, 'valor': '(1) Enero'},
+    {'id': 2, 'valor': '(2) Febrero'},
+    {'id': 3, 'valor': '(3) Marzo'},
+    {'id': 4, 'valor': '(4) Abril'},
+    {'id': 5, 'valor': '(5) Mayo'},
+    {'id': 6, 'valor': '(6) Junio'},
+    {'id': 7, 'valor': '(7) Julio'},
+    {'id': 8, 'valor': '(8) Agosto'},
+    {'id': 9, 'valor': '(9) Septiembre'},
+    {'id': 10,'valor': '(10) Octubre'},
+    {'id': 11,'valor': '(11) Noviembre'},
+    {'id': 12,'valor': '(12) Diciembre'},
+]

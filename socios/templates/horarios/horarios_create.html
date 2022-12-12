@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Horarios</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Horarios (Nuevo)</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+
+              {% if form.errors %}
+              <div class="alert alert-danger">
+                {{form.errors}}
+              </div>
+              {% endif %}
+              
+
+              <div class="card card-primary card-outline">
+
+                <div class="card-header">
+                  <h5 class="card-title">Horarios - {{socio}}</h5>
+
+                </div>
+
+                <form action="" method="POST">
+                    <div class="card-body">
+                        
+                            {% csrf_token %}
+                            
+                            <input type="hidden" name="socio" id="id_socio" value="{{socio.id}}">
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <h4 class="float-right">Lunes</h4>
+                                </div>
+                                <div class="col-1 float-left">
+                                    {{form.lunes}}
+                                    {{form.lunes.errors}}
+                                </div>
+                                <div class="col-2">
+                                    {{form.lunesHorario}}
+                                    {{form.lunesHorario.errors}}
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <h4 class="float-right">Martes</h4>
+                                </div>
+                                <div class="col-1 float-left">
+                                    {{form.martes}}
+                                </div>
+                                <div class="col-2">
+                                    {{form.martesHorario}}
+                                </div>
+                                <div class="col"></div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                              <div class="col-4">
+                                  <h4 class="float-right">Miercoles</h4>
+                              </div>
+                              <div class="col-1 float-left">
+                                  {{form.miercoles}}
+                              </div>
+                              <div class="col-2">
+                                  {{form.miercolesHorario}}
+                              </div>
+                              <div class="col"></div>
+                          </div>
+
+                          <hr>
+
+                          <div class="row">
+                            <div class="col-4">
+                                <h4 class="float-right">Jueves</h4>
+                            </div>
+                            <div class="col-1 float-left">
+                                {{form.jueves}}
+                            </div>
+                            <div class="col-2">
+                                {{form.juevesHorario}}
+                            </div>
+                            <div class="col"></div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                          <div class="col-4">
+                              <h4 class="float-right">Viernes</h4>
+                          </div>
+                          <div class="col-1 float-left">
+                              {{form.viernes}}
+                          </div>
+                          <div class="col-2">
+                              {{form.viernesHorario}}
+                          </div>
+                          <div class="col"></div>
+                      </div>
+
+                      <hr>
+
+                        <div class="row">
+                          <div class="col-4">
+                              <h4 class="float-right">Sabado</h4>
+                          </div>
+                          <div class="col-1 float-left">
+                              {{form.sabado}}
+                          </div>
+                          <div class="col-2">
+                              {{form.sabadoHorario}}
+                          </div>
+                          <div class="col"></div>
+                      </div>
+
+                      <hr>
+
+                        <div class="row">
+                          <div class="col-4">
+                              <h4 class="float-right">Domingo</h4>
+                          </div>
+                          <div class="col-1 float-left">
+                              {{form.domingo}}
+                          </div>
+                          <div class="col-2">
+                              {{form.domingoHorario}}
+                          </div>
+                          <div class="col"></div>
+                      </div>
+                        
+                    </div>
+
+                    <div class="card-footer">
+                      <a href="{% url 'socios_index' %}" tabindex="-1" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        <button type="submit" class="btn btn-primary float-right"><i class='bx bx-check-circle'></i> Guardar</button>
+                    </div>
+                </form>
+                
+
+
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+{% endblock content %}
+
+{% block scripts %}
+<script>
+window.onload = (event) =>{
+  comprobarChecks('id_lunes')
+  comprobarChecks('id_martes', '')
+  comprobarChecks('id_miercoles', '')
+  comprobarChecks('id_jueves', '')
+  comprobarChecks('id_viernes', '')
+  comprobarChecks('id_sabado', '')
+  comprobarChecks('id_domingo', '')
+};
+
+document.getElementById('id_lunes').onchange = function() {comprobarChecks('id_lunes', 'onChange')};
+document.getElementById('id_martes').onchange = function() {comprobarChecks('id_martes', 'onChange')};
+document.getElementById('id_miercoles').onchange = function() {comprobarChecks('id_miercoles', 'onChange')};
+document.getElementById('id_jueves').onchange = function() {comprobarChecks('id_jueves', 'onChange')};
+document.getElementById('id_viernes').onchange = function() {comprobarChecks('id_viernes', 'onChange')};
+document.getElementById('id_sabado').onchange = function() {comprobarChecks('id_sabado', 'onChange')};
+document.getElementById('id_domingo').onchange = function() {comprobarChecks('id_domingo', 'onChange')};
+
+function comprobarChecks(id, evento){
+  var horario_id = id + 'Horario'
+  var check = document.getElementById(id)
+  document.getElementById(horario_id).disabled = !check.checked;
+  if (evento == 'onChange'){
+    document.getElementById(horario_id).value = ""
+    if (check.checked){
+      document.getElementById(horario_id).setAttribute("required", "");
+    }else{
+      document.getElementById(horario_id).removeAttribute("required");
+    }
+  }
+  
+    
+}
+</script>
+{% endblock scripts %}

@@ -109,9 +109,10 @@
                         <tr>
                           <td>{{socio.apellido}}, {{socio.nombre}}</td>
                           <td>{{socio.estado}}</td>
-                          <td>Lun. 14:00Hs - Mie. 14:00Hs - Vie. 1:00Hs</td>
+                          <td>{{socio.socio_horario.first}}</td>
                           <td>
                             <a href="#" title="Ver Rutina"><i class='bx bx-dumbbell bx-sm'></i> </a>
+                            <a href="{% url 'horarios_update' socio.socio_horario.first.id %}" title="Horarios"><i class='bx bx-time bx-sm'></i> </a>                          
                             <a href="{% url 'socios_show' socio.id %}"><i class='bx bx-show bx-sm' ></i> </a>
                             <a href="{% url 'socios_update' socio.id %}"><i class='bx bxs-edit bx-sm' ></i> </a>
                             <a href="{% url 'socios_delete' socio.id %}"><i class='bx bx-trash bx-sm'></i> </a></td>

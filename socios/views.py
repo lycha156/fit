@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Cuota, Socio
-from .forms import CuotaForm, SocioForm
+from .models import Cuota, Socio, Horario
+from .forms import CuotaForm, SocioForm, HorarioForm
 from pagos.models import Pago
 from django.db.models import Q
 from documentos.models import Documento
@@ -21,7 +21,9 @@ def create(request):
 
         try:
             if form.is_valid():
-                form.save()
+                socioNuevo = form.save()
+                # inicializar horarios
+                Horario.objects.create(socio = socioNuevo)
                 messages.success(request, 'Datos del socio guardados con exito.')
                 return redirect('socios_index')
             else:
@@ -148,3 +150,49 @@ def cuotas_delete(request, id=id):
         'cuota': cuota
     }
     return render(request, 'cuotas_delete.html', context)
+
+
+# HORARIOS
+
+def horarios_create(request, id=id):
+    form = HorarioForm()
+    socio = get_object_or_404(Socio, pk=id)
+
+    if request.method == 'POST':
+        form = HorarioForm(request.POST)
+        if form.is_valid():
+            try:
+                instancia = form.save(commit=False)
+                instancia.socio = Socio.objects.get(pk=id)
+                instancia.save()
+                messages.success(request, f'Horario para socio ({socio}) fue actualizado con exito.-')
+                return redirect('socios_index')
+            except Exception as e:
+                messages.success(request, f'No fue posible actualizar horarios de socio ({socio}. Error: {e}.-)')
+                return redirect('socios_index')
+
+
+    context = {
+        'form': form,
+        'socio': socio
+    }
+    return render(request, 'horarios/horarios_create.html', context)
+
+def horarios_update(request, id=id):
+    obj = get_object_or_404(Horario, pk=id)
+    form = HorarioForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        try:
+            instancia = form.save()
+            messages.success(request, f'Horario de {instancia.socio} fue actualizado con exito.-')
+            return redirect('socios_index')
+        except Exception as e:
+            messages.warning(request, f'No fue posible actualizar horarios de socio ({instancia.socio}. Error: {e}.-)')
+            return redirect('socios_index')
+
+    context = {
+        'form': form,
+        'socio': obj.socio
+    }
+    return render(request, 'horarios/horarios_create.html', context)

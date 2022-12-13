@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Pagos</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Pagos</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+              
+              <script>
+                function ClearFields() {
+
+                  document.getElementById("q").value = "";
+                  document.getElementById("año").value = "";
+                  document.getElementById("fecha").value = "";
+                  document.getElementById("mes").value = "0";
+                  document.getElementById("estado").value = "";
+
+                }
+              </script>
+
+              <div class="card card-primary card-outline collapsed-card">
+                
+                <div class="card-header">
+                  <form action="" method="POST">
+                      <div class="row">
+                        <div class="col-11">
+                          {% csrf_token %}
+                          <div class="input-group input-group-sm">
+                            <input type="text" id="q" name="q" class="form-control" value="{{q}}">
+                            <span class="input-group-append">
+                            <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
+                            </span>
+                          </div>    
+                        </div>  
+                        
+                        <div class="col-1">
+                          <button class="btn btn-primary btn-flat btn-sm float-right" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                          <button title="Limpiar Filtros" onclick="ClearFields();" type=2button class="btn btn-primary btn-flat btn-sm float-right mr-3"><i class='bx bx-reset'></i></button>
+                        </div>
+                      </div>
+                  
+                </div>
+                
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="mes">Mes</label>
+                          <select class="form-control" name="mes" id="mes">
+                            {% for mess in meses %} 
+                              {% if mess.id == mes %}
+                              <option value="{{mess.id}}" selected>{{mess.valor}}</option>
+                              {% else %}
+                              <option value="{{mess.id}}">{{mess.valor}}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="año">Año</label>
+                        <input type="number" class="form-control" name="año" id="año" value="{{año}}">
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select name="estado" id="estado" class="form-control">
+                          {% for estadoo in estados %}
+                            {% if estadoo.id == estado %}
+                              <option value="{{estadoo.id}}" selected>{{estadoo.valor}}</option>
+                            {% else %}
+                              <option value="{{estadoo.id}}">{{estadoo.valor}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" name="fecha" id="fecha" class="form-control" value="{{fecha}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              </div>
+
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5 class="card-title">Pagos</h5>
+
+                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Generar Cuotas</a>
+
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                
+                {% if pagos %}
+                <div class="card-body table-responsive p-0">
+
+                  
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Socio</th>
+                        <th>Mes/Año</th>
+                        <th>Estado</th>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                        <th>Fecha Pago</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for pago in pagos %}
+                      <tr>
+                        {% if pago.estado == 'IMPAGO' %}
+                          <td><i class='bx bx-error' style="Color: red;"></i></td>                            
+                        {% else %}
+                          <td></td>
+                        {% endif %}
+                        <td><a href="{% url 'socios_show' pago.socio.id %}"><strong>{{pago.socio.apellido}}, {{pago.socio.nombre}}</strong></a></td>
+                        <td>{{pago.mes}}/{{pago.año}}</td>
+                        <td>{{pago.estado}}</td>
+                        <td>{{pago.concepto}}</td>
+                        <td>$ {{pago.monto}}</td>
+                        {% if pago.fechapago == None %}
+                          <td> </td>
+                        {% else %}
+                          <td>{{pago.fechapago}}</td>
+                        {% endif %}
+                        <td>             
+                          <a href="{% url 'pagos_update' pago.id %}" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                          <a href="{% url 'pagos_delete' pago.id %}" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                          {% if pago.estado == 'IMPAGO' %}
+                          <a href="{% url 'marcar_pago' pago.id %}" title="Marcar como pagado" alt="Marcar como pagado"><i class='bx bx-money bx-sm'></i> </a>
+                          {% endif %}</td>
+                      </tr>
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+                  
+                </div>
+                {% else %}
+                  <div class="row">
+                    <div class="col-12">
+                      <p>No existen registros de socios para mostrar.-</p>
+                    </div>
+                  </div>
+                    
+                  {% endif %}
+                </div>
+                <!-- /.card-body -->
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+
+
+      <!-- MODAL GENERAR CUOTAS -->
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Generar Pagos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{% url 'generar_cuotas' %}" method="POST">
+              {% csrf_token %}
+              <div class="modal-body">
+                <p style="text-align: center;">Va a generar pagos para todos los socios ACTIVOS con los valores seleccionados debajo</p>
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="mes">Mes</label>
+                          <select class="form-control" name="mes" id="mes">
+                            <option value="1">(1) Enero</option>
+                            <option value="2">(2) Febrero</option>
+                            <option value="3">(3) Marzo</option>
+                            <option value="4">(4) Abril</option>
+                            <option value="5">(5) Mayo</option>
+                            <option value="6">(6) Junio</option>
+                            <option value="7">(7) Julio</option>
+                            <option value="8">(8) Agosto</option>
+                            <option value="9">(9) Septiembre</option>
+                            <option value="10">(10) Octubre</option>
+                            <option value="11">(11) Noviembre</option>
+                            <option value="12">(12) Diciembre</option>
+                          </select>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="año">Mes</label>
+                          <input class="form-control" type="number" name="año" id="año" value="2022">
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Generar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- FIN MODAL GENERAR CUOTAS -->
+{% endblock content %}

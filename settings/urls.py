@@ -24,6 +24,7 @@ urlpatterns = [
     path('pagos/', include('pagos.urls')),
     path('documentos/', include('documentos.urls')),
     path('agenda/', include('agenda.urls')),
+    path('rutinas/', include('rutinas.urls')),
 ]
 
 if settings.DEBUG:

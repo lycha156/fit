@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'mediciones',
     'documentos',
     'agenda',
+    'rutinas',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Rutina {{socio|upper}} ({{agenda.fecha}})</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Rutinas</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+            
+
+              {% if rutinas %}
+
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5 class="card-title">Calentamiento</h5>
+
+                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical bx-sm' ></i></a>
+
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                
+                {% comment %} {% if rutinas %} {% endcomment %}
+                <div class="card-body table-responsive p-0">
+
+                  
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Ejercicio</th>
+                        <th>Peso</th>
+                        <th>Repeticiones / Tiempo</th>
+                        <th>Ver Ejemplo</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr>
+                        <td>Abdominales 90°</td>
+                        <td>15 Kg</td>
+                        <td>12</td>
+                        <td>
+                            <a href="#" title="Foto"><i class='bx bx-image bx-sm'></i> </a>
+                            <a href="#" title="Video"><i class='bx bx-play-circle bx-sm'></i> </a>  
+                        </td>
+                        <td>             
+                          <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                          <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                  
+                </div>
+                {% comment %} {% else %}
+                  <div class="row">
+                    <div class="col-12">
+                      <p>No existen registros de socios para mostrar.-</p>
+                    </div>
+                  </div>
+                    
+                  {% endif %} {% endcomment %}
+                </div>
+                <!-- /.card-body -->
+              </div>
+
+              {% else %}
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <p>No hay datos para mostrar.</p>
+                    </div>
+                </div>
+              {% endif %}
+
+              {% comment %} BOTONES PARA AGREGAR SERIES {% endcomment %}
+
+              <div class="row">
+
+                <div class="col-6">
+                    <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-block" data-card-widget="collapse"><i class='bx bx-plus-medical' ></i> Crear Serie </a>
+                </div>
+
+                <div class="col-6">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="socio_id" value={{socio.id}}>
+                        <input type="hidden" name="agenda_id" value={{agenda.id}}>
+                        <a href="#" class="btn btn-primary btn-block"><i class='bx bx-upload'></i> Cargar Modelo de Serie </a>
+                    </form>
+                </div>
+
+              </div>
+
+              
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+
+      <!-- MODAL GENERAR SERIE NUEVA -->
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Generar Serie</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{% url 'series_create' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="socio_id" value={{socio.id}}>
+              <input type="hidden" name="agenda_id" value={{agenda.id}}>
+              <div class="modal-body">
+                <p style="text-align: center;">Ingrese el nombre de la serie a crear</p>
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                            <label for="serie">Nombre de la Serie</label>
+                            <input type="text" name="serie" id="id_serie" class="form-control" required autofocus>
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Generar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- FIN MODAL GENERAR SERIE NUEVA -->
+{% endblock content %}

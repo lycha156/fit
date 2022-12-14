@@ -8,7 +8,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Rutina {{socio|upper}} ({{agenda.fecha}})</h1>
+              <h1 class="m-0">Rutina {{rutina.socio|upper}} ({{rutina.agenda.fecha}})</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -44,13 +44,18 @@
               {% endif %}
             
 
-              {% if rutinas %}
-
+              {% if rutina %}
+              
+              {% if series %}
+              
+              {% for serie in series %}
+              
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h5 class="card-title">Calentamiento</h5>
-
-                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical bx-sm' ></i></a>
+                  <h5 class="card-title">{{serie.contenedor}}</h5>
+                  
+                  <a href="#"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
+                  <a href="{% url 'series_delete' serie.id %}"  class="btn btn-danger btn-sm float-right mr-3"><i class='bx bx-trash' ></i> Eliminar Serie</a>
 
                 </div>
                 <!-- /.card-header -->
@@ -60,7 +65,7 @@
                 {% comment %} {% if rutinas %} {% endcomment %}
                 <div class="card-body table-responsive p-0">
 
-                  
+                  {% if series.elementos %}
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
@@ -89,6 +94,14 @@
                       
                     </tbody>
                   </table>
+                  {% else %}
+
+                  <p>Esta serie no contiene ejercicions cargados</p>
+
+                  {% comment %} <a href="#" class="btn btn-primary btn-block" ><i class='bx bx-plus-medical' ></i> Cargar Ejercicio</a> {% endcomment %}
+
+                  {% endif %}               
+                  
                   
                 </div>
                 {% comment %} {% else %}
@@ -102,6 +115,15 @@
                 </div>
                 <!-- /.card-body -->
               </div>
+
+              {% comment %} FIN SERIE {% endcomment %}
+              {% endfor %}
+
+              {% comment %} FIN SERIES {% endcomment %}
+              {% endif %}
+
+
+
 
               {% else %}
                 <div class="card card-primary card-outline">
@@ -122,8 +144,7 @@
                 <div class="col-6">
                     <form action="" method="POST">
                         {% csrf_token %}
-                        <input type="hidden" name="socio_id" value={{socio.id}}>
-                        <input type="hidden" name="agenda_id" value={{agenda.id}}>
+                        <input type="hidden" name="rutina_id" value={{rutina.id}}>
                         <a href="#" class="btn btn-primary btn-block"><i class='bx bx-upload'></i> Cargar Modelo de Serie </a>
                     </form>
                 </div>
@@ -153,10 +174,9 @@
             </div>
             <form action="{% url 'series_create' %}" method="POST">
               {% csrf_token %}
-              <input type="hidden" name="socio_id" value={{socio.id}}>
-              <input type="hidden" name="agenda_id" value={{agenda.id}}>
+              <input type="hidden" name="rutina_id" value={{rutina.id}}>
               <div class="modal-body">
-                <p style="text-align: center;">Ingrese el nombre de la serie a crear</p>
+                {% comment %} <p style="text-align: center;">Ingrese el nombre de la serie a crear</p> {% endcomment %}
 
                 <div class="row">
                   <div class="col-12">

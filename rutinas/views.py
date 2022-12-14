@@ -23,17 +23,53 @@ def index(request):
 def show(request, id, agenda ):
     socio = Socio.objects.get(pk = id)
     agenda = Agenda.objects.get(pk = agenda )
+    context = {}
 
-    context = {
-        'socio': socio,
-        'agenda': agenda
-    }
+    # al ingresar a show para la rutina. si la rutina NO existe, crea una nueva
+    # de lo contrario, continua
+    rutina = Rutina.objects.filter(socio = socio, agenda = agenda).first()
+    if not rutina:
+        Rutina.objects.create(socio = socio, agenda = agenda)
+    else:
+        series = Contenedor.objects.filter(rutina = rutina)
+        context.update({'series': series})
+        print(series)
+
+    context.update({'rutina': rutina})
     return render(request, 'rutinas_show.html', context)
 
 # SERIES
 
 def series_create(request):
-    return render(request, 'series/series_create.html')
+    rutina_id = request.POST.get('rutina_id')
+    serie = request.POST.get('serie')
+    rutina = get_object_or_404(Rutina, pk = rutina_id)
+
+    if request.method == 'POST':
+        try:
+            instancia = Contenedor.objects.create(contenedor = serie, rutina = rutina)
+            messages.success(request, f'Serie {instancia.contenedor} cargada con exito')
+            return redirect('rutinas_show', rutina.socio.id, rutina.agenda.id)
+        except Exception as e:
+            messages.warning(request, f'Error durante la carga de datos. Error: {e}')
+            return redirect('rutinas_show', rutina.socio.id, rutina.agenda.id)
+    else:
+        return redirect('rutinas_show', rutina.socio.id, rutina.agenda.id)
+    
+def series_delete(request, id):
+    serie = get_object_or_404(Contenedor, pk=id)
+    if request.method == 'POST':
+        try:
+            instancia = serie.delete()
+            messages.success(request, f'Serie {instancia.contenedor} eliminada con exito.-')
+            return redirect('series_delete')
+        except Exception as e:
+            messages.warning(request, f'No es posible eliminar los datos de la serie {instancia.container}, posee registros relacionados. Error: {e}')
+            return redirect('series_delete')
+    context = {
+        'serie': serie
+    }
+    return render(request, 'series/series_delete.html', context)
 
 
 # EJERCICIOS

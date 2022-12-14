@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Ejercicio</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Ejercicio (Nuevo)</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+
+          {{ form.errors }}
+          <div class="row">
+
+            <div class="col-lg">
+
+              <div class="card card-primary card-outline">
+
+                <div class="card-header">
+                  <h5 class="card-title">Ejercicio</h5>
+
+                </div>
+
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="card-body">
+                        
+                            {% csrf_token %}
+
+                            <div class="row">
+                              <div class="col-12">
+                                <div class="form-group">
+                                  <label for="ejercicio">Nombre del Ejercicio</label>
+                                  {{form.ejercicio}}
+                              </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="foto">Foto</label>
+                                    {{form.foto}}
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="video">Video</label>
+                                        {{form.video}}
+                                    </div>
+                                </div>
+                            </div>
+                                
+                        
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="#" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                    </div>
+                </form>
+                
+
+
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+{% endblock content %}

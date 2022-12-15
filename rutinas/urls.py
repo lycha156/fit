@@ -31,4 +31,9 @@ urlpatterns = [
     # path('show/<int:id>/<int:agenda>', views.show, name="rutinas_show"),
     path('ejercicios/delete/<int:id>', views.ejercicios_delete, name="ejercicios_delete"),
     # path('generar_mes', views.generar_mes, name="agenda_generar_mes"),
+
+    # ELEMENTOS
+    path('elementos/create/<int:contenedor_id>', views.elementos_create, name="elementos_create"),
+    path('elementos/update/<int:id>', views.elementos_update, name="elementos_update"),
+    path('elementos/elementos_delete/<int:id>', views.elementos_delete, name="elementos_delete"),
 ]

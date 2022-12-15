@@ -54,7 +54,7 @@
                 <div class="card-header">
                   <h5 class="card-title">{{serie.contenedor}}</h5>
                   
-                  <a href="#"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
+                  <a href="{% url 'elementos_create' serie.id %}"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
                   <a href="{% url 'series_delete' serie.id %}"  class="btn btn-danger btn-sm float-right mr-3"><i class='bx bx-trash' ></i> Eliminar Serie</a>
 
                 </div>
@@ -65,32 +65,38 @@
                 {% comment %} {% if rutinas %} {% endcomment %}
                 <div class="card-body table-responsive p-0">
 
-                  {% if series.elementos %}
+                  {% if serie.elemento_contenedor.all %}
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
                         <th>Ejercicio</th>
-                        <th>Peso</th>
-                        <th>Repeticiones / Tiempo</th>
-                        <th>Ver Ejemplo</th>
-                        <th>Acciones</th>
+                        <th style="text-align: center;">Peso (Kg)</th>
+                        <th style="text-align: center;">Repeticiones / Tiempo (Seg.)</th>
+                        <th style="text-align: center;">Ver Ejemplo</th>
+                        <th style="text-align: center;">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
 
+                      {% for elemento in serie.elemento_contenedor.all %}
                       <tr>
-                        <td>Abdominales 90°</td>
-                        <td>15 Kg</td>
-                        <td>12</td>
-                        <td>
-                            <a href="#" title="Foto"><i class='bx bx-image bx-sm'></i> </a>
-                            <a href="#" title="Video"><i class='bx bx-play-circle bx-sm'></i> </a>  
+                        <td>{{elemento.ejercicio}}</td>
+                        <td style="text-align: center;">{{elemento.peso}}</td>
+                        <td style="text-align: center;">{{elemento.repeticiones}}</td>
+                        <td style="text-align: center;">
+                          {% if elemento.ejercicio.foto %}
+                            <a data-fslightbox={{elemento.id}} href="{{elemento.ejercicio.foto.url}}" title="Foto"><i class='bx bx-image bx-sm'></i> </a>
+                          {% endif %}
+                          {% if elemento.ejercicio.video %}
+                            <a data-fslightbox={{elemento.id}} href="{{elemento.ejercicio.video.url}}" title="Video"><i class='bx bx-play-circle bx-sm'></i> </a>  
+                          {% endif %}
                         </td>
-                        <td>             
-                          <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                        <td style="text-align: center;">             
+                          <a href="{% url 'elementos_update' elemento.id %}" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                          <a href="{% url 'elementos_delete' elemento.id %}" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
                         </td>
                       </tr>
+                      {% endfor %}
                       
                     </tbody>
                   </table>
@@ -198,3 +204,7 @@
       </div>
       <!-- FIN MODAL GENERAR SERIE NUEVA -->
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static '\plugins\fslightbox\fslightbox.js' %}"></script>
+{% endblock scripts %}

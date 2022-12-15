@@ -28,15 +28,16 @@ class ContenedorForm(forms.ModelForm):
 
 
 class ElementoForm(forms.ModelForm):
-    model = Elemento
-    fields = [
-        'contenedor',
-        'ejercicio',
-        'peso',
-        'repeticiones'
-    ]
+    class Meta:
+        model = Elemento
+        fields = [
+            'contenedor',
+            'ejercicio',
+            'peso',
+            'repeticiones'
+        ]
 
-    contenedor = forms.ModelChoiceField(Contenedor.objects.all(), widget=forms.HiddenInput(attrs={'value': None}))
-    ejerciio = forms.ChoiceField(Elemento.objects.all(), empty_label=None, widget=forms.Select(attrs={'class': 'form-cotnrol'}))
-    peso = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}), default = 0)
-    repeticiones = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}), default = 0)
+    contenedor = forms.ModelChoiceField(Contenedor.objects.all(), empty_label=None, widget=forms.HiddenInput())
+    ejercicio = forms.ModelChoiceField(Ejercicio.objects.all(), empty_label=None, widget=forms.Select(attrs={'class': 'form-control select2bs4', 'id': 'id_ejercicio'}))
+    peso = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    repeticiones = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))

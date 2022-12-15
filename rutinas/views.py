@@ -3,7 +3,7 @@ from .models import Rutina, Ejercicio, Elemento, Contenedor
 from agenda.models import Agenda
 from socios.models import Socio
 import datetime
-from .forms import EjercicioForm
+from .forms import EjercicioForm, ElementoForm
 from django.contrib import messages
 
 # RUTINAS
@@ -31,7 +31,7 @@ def show(request, id, agenda ):
     if not rutina:
         Rutina.objects.create(socio = socio, agenda = agenda)
     else:
-        series = Contenedor.objects.filter(rutina = rutina)
+        series = Contenedor.objects.filter(rutina = rutina).prefetch_related('elemento_contenedor')
         context.update({'series': series})
         print(series)
 
@@ -60,17 +60,74 @@ def series_delete(request, id):
     serie = get_object_or_404(Contenedor, pk=id)
     if request.method == 'POST':
         try:
+            nombre_serie_borrada = serie.contenedor
+            rutina = Rutina.objects.get(pk = serie.rutina.id)
             instancia = serie.delete()
-            messages.success(request, f'Serie {instancia.contenedor} eliminada con exito.-')
-            return redirect('series_delete')
+            messages.success(request, f'Serie {nombre_serie_borrada} eliminada con exito.-')
+            return redirect('rutinas_show', rutina.socio.id, rutina.agenda.id)
         except Exception as e:
-            messages.warning(request, f'No es posible eliminar los datos de la serie {instancia.container}, posee registros relacionados. Error: {e}')
-            return redirect('series_delete')
+            messages.warning(request, f'No es posible eliminar los datos de la serie {nombre_serie_borrada}, posee registros relacionados. Error: {e}')
+            return redirect('rutinas_show', rutina.socio.id, rutina.agenda.id)
     context = {
         'serie': serie
     }
     return render(request, 'series/series_delete.html', context)
 
+
+# DETALLS DE LA SERIE (ELEMENTOS)
+def elementos_create(request, contenedor_id):
+    contenedor = Contenedor.objects.get(pk = contenedor_id)
+    form = ElementoForm(request.POST or None, initial={'contenedor': contenedor})
+
+    if form.is_valid():
+        try:
+            form.save()
+            messages.success(request, 'Datos guardados con exito.-')
+            return redirect('rutinas_show', contenedor.rutina.socio.id, contenedor.rutina.agenda.id) 
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('rutinas_show', contenedor.rutina.socio.id, contenedor.rutina.agenda.id) 
+
+    context = {
+        'form': form
+    }
+    return render(request, 'elementos/elementos_create.html', context)
+
+def elementos_update(request, id):
+    obj = get_object_or_404(Elemento, pk=id)
+    form = ElementoForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        # contenedor = Contenedor.objects.get(pk = obj.contenedor.id)
+        try:
+            form.save()
+            messages.success(request, 'Datos actualizados con exito.-')
+            return redirect('rutinas_show', obj.contenedor.rutina.socio.id, obj.contenedor.rutina.agenda.id)
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('rutinas_show', obj.rutina.socio.id, obj.rutina.agenda.id)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'elementos/elementos_create.html', context)
+
+def elementos_delete(request, id):
+    elemento = get_object_or_404(Elemento, pk=id)
+
+    if request.method == 'POST':
+        try:
+            contenedor = Contenedor.objects.get(pk = elemento.contenedor.id)
+            elemento.delete()
+            messages.success(request, 'Datos eliminados con exito.-')
+            return redirect('rutinas_show', contenedor.rutina.socio.id, contenedor.rutina.agenda.id)
+        except Exception as e:
+            messages.warning(request, f'No es posible eliminar los datos del pago, posee registros relacionados. {e}')
+            return redirect('rutinas_show', contenedor.rutina.socio.id, contenedor.rutina.agenda.id)
+    context = {
+        'elemento': elemento
+    }
+    return render(request, 'elementos/elementos_delete.html', context)
 
 # EJERCICIOS
 
@@ -129,6 +186,9 @@ def ejercicios_delete(request, id):
     ejercicio = get_object_or_404(Ejercicio, pk=id)
     if request.method == 'POST':
         try:
+            # MEJOR ESTO, PARA QUE NO SE DE EL CASO DE BORRAR LAS FOTOS Y NO LA EL CAMPO
+            ejercicio.foto.delete()
+            ejercicio.video.delete()
             ejercicio.delete()
             messages.success(request, 'Datos eliminados con exito.-')
             return redirect('ejercicios_index')
@@ -140,3 +200,5 @@ def ejercicios_delete(request, id):
     }
     return render(request, 'ejercicios/ejercicios_delete.html', context)
 
+def ejercicios_ajax(request):
+    pass

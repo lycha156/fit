@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block css %}
+
+{% endblock css %}
+
 {% block content %}
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -56,17 +60,13 @@
                         
                             {% csrf_token %}
                             
+                            {{form.contenedor}}
+
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="mes">Mes</label>
-                                        {{form.mes}}
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="año">Año</label>
-                                        {{form.año}}
+                                        <label for="ejercicio">Ejercicio</label>
+                                        {{form.ejercicio}}
                                     </div>
                                 </div>
                             </div>
@@ -74,33 +74,17 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="estado">Estado</label>
-                                        {{form.estado}}
+                                        <label for="peso">Peso (Kg)</label>
+                                        {{form.peso}}
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="concepto">Concepto</label>
-                                        {{form.concepto}}
+                                        <label for="repeticiones">Repeticiones / Tiempo (Segundos)</label>
+                                        {{form.repeticiones}}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="monto">Monto ($)</label>
-                                        {{form.monto}}
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="fechapago">Fecha de Pago</label>
-                                        {{form.fechapago}}
-                                    </div>
-                                </div>
-                            </div>
-                                
+                            </div>                               
                         
                     </div>
 
@@ -122,3 +106,12 @@
       </div>
       <!-- /.content -->
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('#id_ejercicio').select2({
+      theme: 'bootstrap4'
+    });
+});
+{% endblock scripts %}

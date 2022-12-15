@@ -23,8 +23,11 @@ class Contenedor(models.Model):
 class Elemento(models.Model):
     contenedor = models.ForeignKey('rutinas.Contenedor', verbose_name="Contenedor", on_delete=models.CASCADE, related_name="elemento_contenedor")
     ejercicio = models.ForeignKey('rutinas.Ejercicio', verbose_name="Ejercicio", on_delete=models.RESTRICT, related_name="elemento_ejercicio")
-    peso = models.FloatField("Peso")
-    repeticiones = models.IntegerField("Repeticiones")
+    peso = models.FloatField("Peso", default = 0)
+    repeticiones = models.IntegerField("Repeticiones", default = 0)
+
+    def __str__(self):
+        return f'{self.ejercicio}'
 
 # EJERCICIOS
 class Ejercicio(models.Model):

@@ -207,4 +207,11 @@
 
 {% block scripts %}
 <script src="{% static '\plugins\fslightbox\fslightbox.js' %}"></script>
+<script>
+  $(function () {
+    $('#exampleModalCenter').on('shown.bs.modal', function (e) {
+      $('#id_serie').focus();
+    })
+  });
+</script>
 {% endblock scripts %}

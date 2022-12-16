@@ -36,4 +36,5 @@ urlpatterns = [
     path('elementos/create/<int:contenedor_id>', views.elementos_create, name="elementos_create"),
     path('elementos/update/<int:id>', views.elementos_update, name="elementos_update"),
     path('elementos/elementos_delete/<int:id>', views.elementos_delete, name="elementos_delete"),
+    path('elementos/ejercicios_ajax/', views.ejercicios_ajax, name="ejercicios_ajax"),
 ]

@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Rutina, Ejercicio, Elemento, Contenedor
 from agenda.models import Agenda
@@ -5,17 +6,28 @@ from socios.models import Socio
 import datetime
 from .forms import EjercicioForm, ElementoForm
 from django.contrib import messages
+from django.db.models import Q
+from django.db.models import Count
 
 # RUTINAS
 def index(request):
+    agenda = Agenda()
 
-    socio = Socio.objects.get(pk = 1)
-    agenda = Agenda.objects.filter(fecha = datetime.date.today()).order_by('fecha')
+    if request.method == 'POST':
+        socio_query = request.POST.get('q')
+        fecha_query = request.POST.get('fecha')
+        if socio_query != '' and fecha_query != '':
+            agenda = Agenda.objects.filter( (Q(socio__nombre__icontains = socio_query) | Q(socio__apellido__icontains = socio_query)) and Q(fecha = fecha_query)).annotate(count='socio.id')
+        else:
+            if socio_query != '':
+                agenda = Agenda.objects.filter( Q(socio__nombre__icontains = socio_query) | Q(socio__apellido__icontains = socio_query)).values('id', 'socio', 'titulo', 'fecha', 'hora').annotate(dbcount=Count('socio'))
+            if fecha_query != '':
+                agenda = Agenda.objects.filter(fecha = fecha_query).order_by('fecha')        
+    else:
+        agenda = Agenda.objects.filter(fecha = datetime.date.today()).order_by('fecha')
 
     context = {
         'fecha_hoy': datetime.date.today(),
-        'rutinas': {'socio': 'Mauricio'},
-        'socio': socio,
         'agendas': agenda
     }
     return render(request, 'rutinas_index.html', context)
@@ -201,4 +213,11 @@ def ejercicios_delete(request, id):
     return render(request, 'ejercicios/ejercicios_delete.html', context)
 
 def ejercicios_ajax(request):
-    pass
+    q = request.GET.get('search')
+    data = []
+
+    ejercicios = Ejercicio.objects.filter(ejercicio__icontains = q)
+    for ejercicio in ejercicios:
+        data.append({'id': ejercicio.id, 'text': ejercicio.ejercicio})
+
+    return JsonResponse(data, safe=False)

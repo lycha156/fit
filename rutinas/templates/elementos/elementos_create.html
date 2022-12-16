@@ -3,7 +3,9 @@
 {% load static %}
 
 {% block css %}
-
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}">
 {% endblock css %}
 
 {% block content %}
@@ -67,6 +69,7 @@
                                     <div class="form-group">
                                         <label for="ejercicio">Ejercicio</label>
                                         {{form.ejercicio}}
+                                        {% comment %} <select name="ejercicio" id="ejercicio" class="form-control select2bs4"></select> {% endcomment %}
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +92,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        <a href="#" tabindex="-1" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
                         <button type="submit" class="btn btn-primary float-right">Guardar</button>
                     </div>
                 </form>
@@ -108,10 +111,35 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
 <script>
-  $(document).ready(function() {
-    $('#id_ejercicio').select2({
-      theme: 'bootstrap4'
-    });
+$( document ).ready(function() {
+  //Initialize Select2 Elements
+  $('.select2bs4').select2({
+
+    theme: 'bootstrap4',
+    ajax: {
+      url: '{% url 'ejercicios_ajax' %}',
+      type: 'get',
+      dataType: 'json',
+      data: function (params) {
+        return {
+            search: params.term // search term
+          };
+      },
+      processResults: function (response) {
+        console.log(response)
+          return {
+              results: response
+          };
+      },
+    }
+
+  });
+
+$(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+  });
 });
+</script>
 {% endblock scripts %}

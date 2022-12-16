@@ -4,32 +4,42 @@ from .models import Rutina, Ejercicio, Elemento, Contenedor
 from agenda.models import Agenda
 from socios.models import Socio
 import datetime
-from .forms import EjercicioForm, ElementoForm
+from .forms import EjercicioForm, ElementoForm, RutinaModeloForm
 from django.contrib import messages
 from django.db.models import Q
-from django.db.models import Count
+
 
 # RUTINAS
+
 def index(request):
     agenda = Agenda()
+    context = {'fecha_hoy': datetime.date.today()}
 
     if request.method == 'POST':
         socio_query = request.POST.get('q')
         fecha_query = request.POST.get('fecha')
-        if socio_query != '' and fecha_query != '':
-            agenda = Agenda.objects.filter( (Q(socio__nombre__icontains = socio_query) | Q(socio__apellido__icontains = socio_query)) and Q(fecha = fecha_query)).annotate(count='socio.id')
-        else:
-            if socio_query != '':
-                agenda = Agenda.objects.filter( Q(socio__nombre__icontains = socio_query) | Q(socio__apellido__icontains = socio_query)).values('id', 'socio', 'titulo', 'fecha', 'hora').annotate(dbcount=Count('socio'))
-            if fecha_query != '':
-                agenda = Agenda.objects.filter(fecha = fecha_query).order_by('fecha')        
-    else:
-        agenda = Agenda.objects.filter(fecha = datetime.date.today()).order_by('fecha')
+        
+        # Si los filtros estan vacios, no pasa nada
+        if socio_query == "" and fecha_query == "":
+            return redirect('rutinas_index')
 
-    context = {
-        'fecha_hoy': datetime.date.today(),
-        'agendas': agenda
-    }
+        # FILTRTADO
+        agenda = Agenda.objects.all()
+
+        if fecha_query != "":
+            agenda = agenda.filter(fecha = fecha_query).order_by('-fecha')  
+
+        if socio_query != "":
+            agenda = agenda.filter( Q(socio__nombre__icontains = socio_query) | Q(socio__apellido__icontains = socio_query) ).order_by('-fecha')[:15]
+        # FIN FILTRADO
+
+        context.update({'fecha_hoy': datetime.datetime.strptime(fecha_query, '%Y-%m-%d').date()})
+       
+    else:
+        agenda = Agenda.objects.filter(fecha = datetime.date.today()).order_by('-fecha')
+
+    context.update({'agendas': agenda})
+
     return render(request, 'rutinas_index.html', context)
 
 def show(request, id, agenda ):
@@ -42,13 +52,14 @@ def show(request, id, agenda ):
     rutina = Rutina.objects.filter(socio = socio, agenda = agenda).first()
     if not rutina:
         Rutina.objects.create(socio = socio, agenda = agenda)
-    else:
-        series = Contenedor.objects.filter(rutina = rutina).prefetch_related('elemento_contenedor')
-        context.update({'series': series})
-        print(series)
+
+    rutina = Rutina.objects.filter(socio = socio, agenda = agenda).first()
+    series = Contenedor.objects.filter(rutina = rutina).prefetch_related('elemento_contenedor')
+    context.update({'series': series})
 
     context.update({'rutina': rutina})
     return render(request, 'rutinas_show.html', context)
+
 
 # SERIES
 
@@ -87,6 +98,7 @@ def series_delete(request, id):
 
 
 # DETALLS DE LA SERIE (ELEMENTOS)
+
 def elementos_create(request, contenedor_id):
     contenedor = Contenedor.objects.get(pk = contenedor_id)
     form = ElementoForm(request.POST or None, initial={'contenedor': contenedor})
@@ -140,6 +152,7 @@ def elementos_delete(request, id):
         'elemento': elemento
     }
     return render(request, 'elementos/elementos_delete.html', context)
+
 
 # EJERCICIOS
 
@@ -221,3 +234,14 @@ def ejercicios_ajax(request):
         data.append({'id': ejercicio.id, 'text': ejercicio.ejercicio})
 
     return JsonResponse(data, safe=False)
+
+
+# MODELOS RUTINAS
+
+def modelos_index(request):
+    form = RutinaModeloForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'rutinas_modelos/modelos_index.html', context)

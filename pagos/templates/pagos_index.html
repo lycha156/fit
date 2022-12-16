@@ -60,7 +60,7 @@
                 <div class="card-header">
                   <form action="" method="POST">
                       <div class="row">
-                        <div class="col-11">
+                        <div class="col-lg-10 col-sm-12">
                           {% csrf_token %}
                           <div class="input-group input-group-sm">
                             <input type="text" id="q" name="q" class="form-control" value="{{q}}">
@@ -70,7 +70,7 @@
                           </div>    
                         </div>  
                         
-                        <div class="col-1">
+                        <div class="col-lg-2 col-sm-12">
                           <button class="btn btn-primary btn-flat btn-sm float-right" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
                           <button title="Limpiar Filtros" onclick="ClearFields();" type=2button class="btn btn-primary btn-flat btn-sm float-right mr-3"><i class='bx bx-reset'></i></button>
                         </div>

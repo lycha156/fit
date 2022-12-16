@@ -8,12 +8,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Rutinas</h1>
+              <h1 class="m-0">Rutinas (MODELOS)</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Rutinas</li>
+                <li class="breadcrumb-item active">Rutinas (MODELOS)</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -49,7 +49,7 @@
                   <form action="" method="POST">
                       <div class="row">
                         <div class="col-lg-1 col-sm-2">
-                          <a href="{% url 'rutinas_index' %}" title="Hoy" class="btn btn-primary"><i class='bx bx-hash'></i></a>
+                          <a href="#" title="Hoy" class="btn btn-primary"><i class='bx bx-hash'></i></a>
                         </div>
                         <div class="col-lg-3 col-sm-10">
                           {% csrf_token %}
@@ -75,37 +75,33 @@
 
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <h5 class="card-title">Cronograma para el dia {{fecha_hoy|date:"d F Y"}}</h5>
+                  <h5 class="card-title">Modelos de Rutinas</h5>
 
-                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-money-withdraw'></i> Generar Cuotas</a>
+                  <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm float-right"><i class='bx bx-medical'></i> Crear Rutina</a>
 
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
 
                 
-                {% if agendas %}
+                {% if rutinas %}
                 <div class="card-body table-responsive p-0">
 
                   
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
-                        <th>Socio</th>
-                        <th>Horario</th>
-                        <th style="text-align: center;">Rutina para hoy</th>
+                        <th>Titulo</th>
+                        <th>Descripcion</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                      {% for agenda in agendas %}
+                      {% for rutina in rutinas %}
                       <tr>
-                        <td>{{agenda.socio}}</td>
-                        <td>{{agenda.hora}} Hs ({{agenda.fecha}})</td>
-                        <td style="text-align: center;">
-                          <a href="{% url 'rutinas_show' agenda.socio.id agenda.id %}" target="_blank" title="Ver Rutina"><i class='bx bx-dumbbell bx-sm' ></i> </a>
-                        </td>
+                        <td>{{rutina.titulo}}</td>
+                        <td>{{rutinas.descripcion}}</td>
                         <td>             
                           <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
                           <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
@@ -136,4 +132,49 @@
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->
+
+            <!-- MODAL GENERAR CUOTAS -->
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Crear Rutina</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="#" method="POST">
+              {% csrf_token %}
+              <div class="modal-body">
+                {% comment %} <p style="text-align: center;">Va a generar pagos para todos los socios ACTIVOS con los valores seleccionados debajo</p> {% endcomment %}
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="titulo">Titulo</label>
+                          {{form.titulo}}
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="descripcion">Descripcion</label>
+                          {{form.descripcion}}
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Crear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- FIN MODAL GENERAR CUOTAS -->
 {% endblock content %}

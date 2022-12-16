@@ -259,7 +259,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
-          <li class="nav-item">
+
+          <li class="nav-item menu-close">
+            <a href="#" class="nav-link">
+              <i class='bx bx-dumbbell bx-sm'></i>
+              <p>
+                Rutinas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'rutinas_index' %}" class="nav-link">
+                  <i class='bx bx-dumbbell bx-sm'></i>
+                  <p>Rutinas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'modelos_rutinas_index' %}" class="nav-link">
+                  <i class='bx bx-dumbbell bx-sm'></i>
+                  <p>Modelos Rutinas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'ejercicios_index' %}" class="nav-link">
+                  <i class='bx bx-dumbbell bx-sm'></i>
+                  <p>Ejercicios</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          {% comment %} <li class="nav-item">
             <a href="{% url 'rutinas_index' %}" class="nav-link">
               <i class='bx bx-dumbbell bx-sm'></i>
               <p>
@@ -274,7 +305,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 Ejercicios
               </p>
             </a>
-          </li>
+          </li> {% endcomment %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

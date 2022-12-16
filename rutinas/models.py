@@ -38,3 +38,28 @@ class Ejercicio(models.Model):
 
     def __str__(self):
         return f'{self.ejercicio}'
+
+# -------------------------- MODELOS DE RUTINAS --------------------------
+
+# RUTINA MODELO
+class Rutina_modelo(models.Model):
+    titulo = models.CharField("Titulo", max_length=100)
+    descripcion = models.TextField("Descripcion")
+
+    def __str__(self):
+        return self.titulo
+
+# SERIE MODELO
+class Contenedor_modelo(models.Model):
+    rutina = models.ForeignKey('rutinas.Rutina_modelo', verbose_name="Rutina", on_delete=models.CASCADE, related_name="contenedor_rutina_modelo")
+    contenedor = models.CharField("Serie", max_length=50)
+
+# ELEMENTOS_CONTENEDOR MODELO
+class Elemento_modelo(models.Model):
+    contenedor = models.ForeignKey('rutinas.Contenedor_modelo', verbose_name="Contenedor", on_delete=models.CASCADE, related_name="elemento_Contenedor_modelo")
+    ejercicio = models.ForeignKey('rutinas.Ejercicio', verbose_name="Ejercicio", on_delete=models.RESTRICT, related_name="ejercicio_elemento_modelo")
+    peso = models.FloatField("Peso", default = 0)
+    repeticiones = models.IntegerField("Repeticiones", default = 0)
+
+    def __str__(self):
+        return f'{self.ejercicio}'

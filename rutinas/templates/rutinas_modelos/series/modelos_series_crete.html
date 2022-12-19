@@ -8,12 +8,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Rutinas (MODELOS)</h1>
+              <h1 class="m-0">Modelo Serie</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Rutinas (MODELOS)</li>
+                <li class="breadcrumb-item active">Modelo Serie</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -38,13 +38,8 @@
                 {% endfor %}
               {% comment %} FIN ALERTAS {% endcomment %}
               {% endif %}
-        
-        {% if form.errors %}
-        <div class="alert alert-danger">
-            {{ form.errors }}
-        </div>
-        {% endif %}
-                  
+
+          {{ form.errors }}
           <div class="row">
 
             <div class="col-lg">
@@ -52,14 +47,16 @@
               <div class="card card-primary card-outline">
 
                 <div class="card-header">
-                  <h5 class="card-title">Modelos de Rutinas</h5>
+                  <h5 class="card-title">Serie</h5>
 
                 </div>
 
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="card-body">
                         
                             {% csrf_token %}
+
+                            {{form.rutina}}
 
                             <div class="row">
                               <div class="col-12">
@@ -68,20 +65,12 @@
                                   {{form.titulo}}
                               </div>
                               </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="descripcion">Descripcion</label>
-                                    {{form.descripcion}}
-                                </div>
-                            </div>
                             </div>                               
                         
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" onclick="history.back()" tabindex="-1" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        <a href="#" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
                         <button type="submit" class="btn btn-primary float-right">Guardar</button>
                     </div>
                 </form>

@@ -48,19 +48,11 @@
                 <div class="card-header">
                   <form action="" method="POST">
                       <div class="row">
-                        <div class="col-lg-1 col-sm-2">
-                          <a href="#" title="Hoy" class="btn btn-primary"><i class='bx bx-hash'></i></a>
-                        </div>
-                        <div class="col-lg-3 col-sm-10">
+                        <div class="col-lg-5 col-sm-12">
                           {% csrf_token %}
                           <input type="text" id="q" name="q" class="form-control" placeholder="Buscar por nombre" value="{{q}}">
                         </div>    
-                        
-
-                        <div class="col-lg-3 col-sm-12">
-                          <input type="date" name="fecha" id="fecha" class="form-control" value="{{fecha}}">
-                        </div>
-                        <div class="col-lg-3 col-sm-12">
+                        <div class="col-lg-5 col-sm-12">
                           <button type="submit" class="btn btn-primary btn-flat">Buscar</button>
                         </div>
                         
@@ -101,10 +93,11 @@
                       {% for rutina in rutinas %}
                       <tr>
                         <td>{{rutina.titulo}}</td>
-                        <td>{{rutinas.descripcion}}</td>
-                        <td>             
-                          <a href="#" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
-                          <a href="#" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                        <td>{{rutina.descripcion}}</td>
+                        <td>
+                          <a href="{% url 'modelos_rutinas_show' rutina.id %}" title="Ver Rutina"><i class='bx bx-dumbbell bx-sm' ></i> </a>
+                          <a href="{% url 'modelos_rutinas_update' rutina.id %}" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                          <a href="{% url 'modelos_rutinas_delete' rutina.id %}" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
                       </tr>
                       {% endfor %}
 
@@ -133,7 +126,7 @@
       </div>
       <!-- /.content -->
 
-            <!-- MODAL GENERAR CUOTAS -->
+      <!-- MODAL GENERAR CUOTAS -->
       <!-- Modal -->
       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -144,7 +137,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="#" method="POST">
+            <form action="{% url 'modelos_rutinas_create' %}" method="POST">
               {% csrf_token %}
               <div class="modal-body">
                 {% comment %} <p style="text-align: center;">Va a generar pagos para todos los socios ACTIVOS con los valores seleccionados debajo</p> {% endcomment %}
@@ -169,7 +162,7 @@
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" tabindex="-1" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="submit" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Crear</button>
               </div>
             </form>
@@ -178,3 +171,13 @@
       </div>
       <!-- FIN MODAL GENERAR CUOTAS -->
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  $(function () {
+    $('#exampleModalCenter').on('shown.bs.modal', function (e) {
+      $('#id_titulo').focus();
+    })
+  });
+</script>
+{% endblock scripts %}

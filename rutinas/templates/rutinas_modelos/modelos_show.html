@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Modelo Rutina - {{rutina.titulo}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Modelo Rutina</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg">
+
+              {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+            
+
+              {% if rutina %}
+              
+              {% if series %}
+              
+              {% for serie in series %}
+              
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5 class="card-title">{{serie.contenedor}}</h5>
+                  
+                  <a href="{% url 'elementos_create' serie.id %}"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
+                  <a href="{% url 'modelos_series_delete' serie.id %}"  class="btn btn-danger btn-sm float-right mr-3"><i class='bx bx-trash' ></i> Eliminar Serie</a>
+
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                
+                {% comment %} {% if rutinas %} {% endcomment %}
+                <div class="card-body table-responsive p-0">
+
+                  {% if serie.elemento_contenedor.all %}
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Ejercicio</th>
+                        <th style="text-align: center;">Peso (Kg)</th>
+                        <th style="text-align: center;">Repeticiones / Tiempo (Seg.)</th>
+                        <th style="text-align: center;">Ver Ejemplo</th>
+                        <th style="text-align: center;">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for elemento in serie.elemento_contenedor.all %}
+                      <tr>
+                        <td>{{elemento.ejercicio}}</td>
+                        <td style="text-align: center;">{{elemento.peso}}</td>
+                        <td style="text-align: center;">{{elemento.repeticiones}}</td>
+                        <td style="text-align: center;">
+                          {% if elemento.ejercicio.foto %}
+                            <a data-fslightbox={{elemento.id}} href="{{elemento.ejercicio.foto.url}}" title="Foto"><i class='bx bx-image bx-sm'></i> </a>
+                          {% endif %}
+                          {% if elemento.ejercicio.video %}
+                            <a data-fslightbox={{elemento.id}} href="{{elemento.ejercicio.video.url}}" title="Video"><i class='bx bx-play-circle bx-sm'></i> </a>  
+                          {% endif %}
+                        </td>
+                        <td style="text-align: center;">             
+                          <a href="{% url 'elementos_update' elemento.id %}" title="Editar"><i class='bx bxs-edit bx-sm' ></i> </a>
+                          <a href="{% url 'elementos_delete' elemento.id %}" title="Borrar"><i class='bx bx-trash bx-sm'></i> </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+                  {% else %}
+
+                  <p>Esta serie no contiene ejercicions cargados</p>
+
+                  {% comment %} <a href="#" class="btn btn-primary btn-block" ><i class='bx bx-plus-medical' ></i> Cargar Ejercicio</a> {% endcomment %}
+
+                  {% endif %}               
+                  
+                  
+                </div>
+                {% comment %} {% else %}
+                  <div class="row">
+                    <div class="col-12">
+                      <p>No existen registros de socios para mostrar.-</p>
+                    </div>
+                  </div>
+                    
+                  {% endif %} {% endcomment %}
+                </div>
+                <!-- /.card-body -->
+              </div>
+
+              {% comment %} FIN SERIE {% endcomment %}
+              {% endfor %}
+
+              {% comment %} FIN SERIES {% endcomment %}
+
+              {% else %}
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <p>La Rutina no contiene Series.-</p>
+                </div>
+            </div>
+              {% endif %}
+
+
+
+
+              {% else %}
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <p>No hay datos para mostrar.</p>
+                    </div>
+                </div>
+              {% endif %}
+
+              {% comment %} BOTONES PARA AGREGAR SERIES {% endcomment %}
+
+              <div class="row">
+
+                <div class="col-6">
+                    <a href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-block" data-card-widget="collapse"><i class='bx bx-plus-medical' ></i> Crear Serie </a>
+                </div>
+
+                <div class="col-6">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="rutina_id" value={{rutina.id}}>
+                        <a href="#" class="btn btn-primary btn-block"><i class='bx bx-upload'></i> Cargar Modelo de Serie </a>
+                    </form>
+                </div>
+
+              </div>
+
+              
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+
+      <!-- MODAL GENERAR SERIE NUEVA -->
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Generar Serie</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{% url 'modelos_series_create' %}" method="POST">
+              {% csrf_token %}
+              
+              {{form.rutina}}
+
+              <div class="modal-body">
+                {% comment %} <p style="text-align: center;">Ingrese el nombre de la serie a crear</p> {% endcomment %}
+
+                <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                            <label for="contenedor">Nombre de la Serie</label>
+                            {{form.contenedor}}
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary"><i class='bx bx-plus-medical'></i> Generar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- FIN MODAL GENERAR SERIE NUEVA -->
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static '\plugins\fslightbox\fslightbox.js' %}"></script>
+<script>
+  $(function () {
+    $('#exampleModalCenter').on('shown.bs.modal', function (e) {
+      $('#id_serie').focus();
+    })
+  });
+</script>
+{% endblock scripts %}

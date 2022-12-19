@@ -40,8 +40,14 @@ urlpatterns = [
 
     # MODELOS RUTINAS
     path('modelos/', views.modelos_index, name="modelos_rutinas_index"),
-    # path('elementos/create/<int:contenedor_id>', views.elementos_create, name="elementos_create"),
-    # path('elementos/update/<int:id>', views.elementos_update, name="elementos_update"),
-    # path('elementos/elementos_delete/<int:id>', views.elementos_delete, name="elementos_delete"),
+    path('modelos/create/', views.modelos_create, name="modelos_rutinas_create"),
+    path('modelos/update/<int:id>', views.modelos_update, name="modelos_rutinas_update"),
+    path('modelos/delete/<int:id>', views.modelos_delete, name="modelos_rutinas_delete"),
+    path('modelos/show/<int:id>', views.modelos_show, name="modelos_rutinas_show"),
     # path('elementos/ejercicios_ajax/', views.ejercicios_ajax, name="ejercicios_ajax"),
+
+    # MODELOS SERIES
+    path('modelos/series/create', views.modelos_series_create, name="modelos_series_create"),
+    # path('modelos/series/update/<int:id>', views.modelos_series_update, name="modelos_series_update"),
+    path('modelos/series/delete/<int:id>', views.modelos_series_delete, name="modelos_series_delete"),
 ]

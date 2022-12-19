@@ -1,10 +1,10 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Rutina, Ejercicio, Elemento, Contenedor
+from .models import Rutina, Ejercicio, Elemento, Contenedor, Rutina_modelo, Contenedor_modelo
 from agenda.models import Agenda
 from socios.models import Socio
 import datetime
-from .forms import EjercicioForm, ElementoForm, RutinaModeloForm
+from .forms import EjercicioForm, ElementoForm, RutinaModeloForm, ContenedorModeloSerieForm
 from django.contrib import messages
 from django.db.models import Q
 
@@ -240,8 +240,124 @@ def ejercicios_ajax(request):
 
 def modelos_index(request):
     form = RutinaModeloForm()
+    
+    if request.method == 'POST':
+        query = request.POST.get('q')
+        modelos_rutinas = Rutina_modelo.objects.filter(titulo__icontains = query)[:50]
+    else:
+        modelos_rutinas = Rutina_modelo.objects.all()[:50]
+
+    context = {
+        'form': form,
+        'rutinas': modelos_rutinas
+    }
+    return render(request, 'rutinas_modelos/modelos_index.html', context)
+
+def modelos_create(request):
+    if request.method == 'POST':
+        form = RutinaModeloForm(request.POST or None)
+
+        if form.is_valid():
+            try:
+                instance = form.save()
+                messages.success(request, f'Rutina {instance.titulo} creada con exito')
+                return redirect('modelos_rutinas_index')
+            except Exception as e:
+                messages.warning(request, f'Error al crear la rutina {instance.titulo}. Error: {e}')
+                return redirect('modelos_rutinas_index')
+    else:
+        return redirect('modelos_rutinas_index')
+
+def modelos_update(request, id):
+    obj = get_object_or_404(Rutina_modelo, pk=id)
+    form = RutinaModeloForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        try:
+            form.save()
+            messages.success(request, 'Datos actualizados con exito.-')
+            return redirect('modelos_rutinas_index')
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('modelos_rutinas_index')
 
     context = {
         'form': form
     }
-    return render(request, 'rutinas_modelos/modelos_index.html', context)
+    return render(request, 'rutinas_modelos/modelos_create.html', context)
+
+def modelos_delete(request, id):
+
+    rutina = get_object_or_404(Rutina_modelo, pk=id)
+    if request.method == 'POST':
+        try:
+            rutina.delete()
+            messages.success(request, 'Datos eliminados con exito.-')
+            return redirect('modelos_rutinas_index')
+        except Exception as e:
+            messages.warning(request, f'No es posible eliminar los datos del pago, posee registros relacionados. {e}')
+            return redirect('modelos_rutinas_index')
+    context = {
+        'rutina': rutina
+    }
+    return render(request, 'rutinas_modelos/modelos_delete.html', context)
+
+def modelos_show(request, id):
+    # rutina = Rutina_modelo.objects.get(pk = id).prefetch_related('contenedor_rutina_modelo')
+    rutina = Rutina_modelo.objects.get(pk = id)
+    series = Contenedor_modelo.objects.filter(rutina = rutina.id)
+    serieform = ContenedorModeloSerieForm(initial={'rutina': rutina.id})
+    context = {
+        'rutina': rutina,
+        'form': serieform,
+        'series': series
+    }
+    return render(request, 'rutinas_modelos/modelos_show.html', context)
+
+# MODELOS SERIES
+
+def modelos_series_create(request):
+    if request.method == 'POST':
+        form = ContenedorModeloSerieForm(request.POST or None)
+        if form.is_valid():
+            instancia = form.save()
+            messages.success(request, f'La serie {instancia.contenedor}, fue guardada con exito.-')
+            return redirect('modelos_rutinas_show', instancia.rutina.id)
+        
+    messages.warning(request, 'Error al cargar el formulario')
+    return redirect('modelos_rutinas_index')
+
+def modelos_series_update(request, id):
+    obj = get_object_or_404(Contenedor_modelo, pk=id)
+    form = ContenedorModeloSerieForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        try:
+            form.save()
+            messages.success(request, 'Datos actualizados con exito.-')
+            return redirect('modelos_rutinas_show', obj.rutina.id)
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('modelos_rutinas_show', obj.rutina.id)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'rutinas_modelos/series/modelos_series_create.html', context)
+
+def modelos_series_delete(request, id):
+    serie = get_object_or_404(Contenedor_modelo, pk=id)
+
+    if request.method == 'POST':
+        try:
+            rutina = Rutina_modelo.objects.get(pk = serie.rutina.id)
+            serie.delete()
+            messages.success(request, 'Datos eliminados con exito.-')
+            return redirect('modelos_rutinas_show', rutina.id)
+        except Exception as e:
+            messages.warning(request, f'No es posible eliminar los datos del pago, posee registros relacionados. {e}')
+            return redirect('modelos_rutinas_show', rutina.id)
+    context = {
+        'serie': serie
+    }
+    return render(request, 'rutinas_modelos/series/modelos_series_delete.html', context)

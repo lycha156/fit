@@ -57,3 +57,14 @@ class RutinaModeloForm(forms.ModelForm):
 
     def __str__(self):
         return self.titulo
+
+class ContenedorModeloSerieForm(forms.ModelForm):
+    class Meta:
+        model = Contenedor_modelo
+        fields = [
+            'rutina',
+            'contenedor'
+        ]
+    
+    rutina = forms.ModelChoiceField(Rutina_modelo.objects.all(), empty_label=None, widget=forms.HiddenInput())
+    contenedor = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))

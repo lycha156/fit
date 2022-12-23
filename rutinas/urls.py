@@ -50,4 +50,8 @@ urlpatterns = [
     path('modelos/series/create', views.modelos_series_create, name="modelos_series_create"),
     # path('modelos/series/update/<int:id>', views.modelos_series_update, name="modelos_series_update"),
     path('modelos/series/delete/<int:id>', views.modelos_series_delete, name="modelos_series_delete"),
+
+    # MODELOS ELEMENTOS
+    path('modelos/elementos/create/<int:contenedor_id>', views.modelos_elementos_create, name="C"),
+
 ]

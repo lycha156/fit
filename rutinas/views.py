@@ -4,7 +4,7 @@ from .models import Rutina, Ejercicio, Elemento, Contenedor, Rutina_modelo, Cont
 from agenda.models import Agenda
 from socios.models import Socio
 import datetime
-from .forms import EjercicioForm, ElementoForm, RutinaModeloForm, ContenedorModeloSerieForm
+from .forms import EjercicioForm, ElementoForm, RutinaModeloForm, ContenedorModeloSerieForm, ElementoModeloForm
 from django.contrib import messages
 from django.db.models import Q
 
@@ -305,7 +305,7 @@ def modelos_delete(request, id):
 def modelos_show(request, id):
     # rutina = Rutina_modelo.objects.get(pk = id).prefetch_related('contenedor_rutina_modelo')
     rutina = Rutina_modelo.objects.get(pk = id)
-    series = Contenedor_modelo.objects.filter(rutina = rutina.id)
+    series = Contenedor_modelo.objects.filter(rutina = rutina.id).prefetch_related('elemento_Contenedor_modelo')
     serieform = ContenedorModeloSerieForm(initial={'rutina': rutina.id})
     context = {
         'rutina': rutina,
@@ -361,3 +361,23 @@ def modelos_series_delete(request, id):
         'serie': serie
     }
     return render(request, 'rutinas_modelos/series/modelos_series_delete.html', context)
+
+# DETALLES DE LOS MODELOS DE LAS SERIES
+
+def modelos_elementos_create(request, contenedor_id):
+    contenedor = Contenedor_modelo.objects.get(pk = contenedor_id)
+    form = ElementoModeloForm(request.POST or None, initial={'contenedor': contenedor})
+
+    if form.is_valid():
+        try:
+            form.save()
+            messages.success(request, 'Datos guardados con exito.-')
+            return redirect('modelos_rutinas_show', contenedor.rutina.id) 
+        except Exception as e:
+            messages.warning(request, f'Error al actualizar los datos. {e}')
+            return redirect('modelos_rutinas_show', contenedor.rutina.id) 
+
+    context = {
+        'form': form
+    }
+    return render(request, 'rutinas_modelos/elementos/modelos_elementos_create.html', context)

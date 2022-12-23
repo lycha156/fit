@@ -68,3 +68,19 @@ class ContenedorModeloSerieForm(forms.ModelForm):
     
     rutina = forms.ModelChoiceField(Rutina_modelo.objects.all(), empty_label=None, widget=forms.HiddenInput())
     contenedor = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class ElementoModeloForm(forms.ModelForm):
+    class Meta:
+        model = Elemento_modelo
+        fields = [
+            'contenedor',
+            'ejercicio',
+            'peso',
+            'repeticiones'
+        ]
+
+    contenedor = forms.ModelChoiceField(Contenedor_modelo.objects.all(), widget=forms.HiddenInput())
+    ejercicio = forms.ModelChoiceField(Ejercicio.objects.all(), widget=forms.Select(attrs={'class': 'form-control select2bs4', 'id': 'id_ejercicio'}))
+    peso = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    repeticiones = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))

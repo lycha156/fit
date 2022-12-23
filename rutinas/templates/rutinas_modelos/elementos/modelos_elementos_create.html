@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}">
+{% endblock css %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Detalles de la Serie ...</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Detalles (Nuevo)</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          {% if messages %}
+              {% comment %} ALERTAS {% endcomment %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {% comment %} <h5><i class='bx bx-info-circle bx-md'></i></h5> {% endcomment %}
+                        <ul style="margin-bottom: 0px;">
+                          <li class="">{{ message }}</li>                   
+                        </ul>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              {% comment %} FIN ALERTAS {% endcomment %}
+              {% endif %}
+
+          {{ form.errors }}
+          <div class="row">
+
+            <div class="col-lg">
+
+              <div class="card card-primary card-outline">
+
+                <div class="card-header">
+                  <h5 class="card-title">Detalles</h5>
+
+                </div>
+
+                <form action="" method="POST">
+                    <div class="card-body">
+                        
+                            {% csrf_token %}
+                            
+                            {{form.contenedor}}
+
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="ejercicio">Ejercicio</label>
+                                        {{form.ejercicio}}
+                                        {% comment %} <select name="ejercicio" id="ejercicio" class="form-control select2bs4"></select> {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="peso">Peso (Kg)</label>
+                                        {{form.peso}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="repeticiones">Repeticiones / Tiempo (Segundos)</label>
+                                        {{form.repeticiones}}
+                                    </div>
+                                </div>
+                            </div>                               
+                        
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="#" tabindex="-1" onclick="history.back()" class="btn btn-success float-left"><i class='bx bx-arrow-back'></i> Volver</a>
+                        <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                    </div>
+                </form>
+                
+
+
+              </div>
+
+            </div>
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script>
+$( document ).ready(function() {
+  //Initialize Select2 Elements
+  $('.select2bs4').select2({
+
+    theme: 'bootstrap4',
+    ajax: {
+      url: '{% url 'ejercicios_ajax' %}',
+      type: 'get',
+      dataType: 'json',
+      data: function (params) {
+        return {
+            search: params.term // search term
+          };
+      },
+      processResults: function (response) {
+        console.log(response)
+          return {
+              results: response
+          };
+      },
+    }
+
+  });
+
+$(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+  });
+});
+</script>
+{% endblock scripts %}

@@ -54,7 +54,7 @@
                 <div class="card-header">
                   <h5 class="card-title">{{serie.contenedor}}</h5>
                   
-                  <a href="{% url 'elementos_create' serie.id %}"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
+                  <a href="{% url 'modelos_elementos_create' serie.id %}"  class="btn btn-primary btn-sm float-right"><i class='bx bx-plus-medical' ></i> Nuevo Ejercicio</a>
                   <a href="{% url 'modelos_series_delete' serie.id %}"  class="btn btn-danger btn-sm float-right mr-3"><i class='bx bx-trash' ></i> Eliminar Serie</a>
 
                 </div>
@@ -65,7 +65,7 @@
                 {% comment %} {% if rutinas %} {% endcomment %}
                 <div class="card-body table-responsive p-0">
 
-                  {% if serie.elemento_contenedor.all %}
+                  {% if serie.elemento_Contenedor_modelo.all %}
                   <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
@@ -78,7 +78,7 @@
                     </thead>
                     <tbody>
 
-                      {% for elemento in serie.elemento_contenedor.all %}
+                      {% for elemento in serie.elemento_Contenedor_modelo.all %}
                       <tr>
                         <td>{{elemento.ejercicio}}</td>
                         <td style="text-align: center;">{{elemento.peso}}</td>
